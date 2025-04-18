@@ -38,7 +38,14 @@ lib/
 │   ├── repositories/   # 추상화된 리포지토리 인터페이스
 │   ├── usecases/       # 유스케이스 (비즈니스 로직 캡슐화)
 ├── presentation/       # UI 계층 (View + ViewModel)
-│   ├── pages/          # 화면별 UI
+│   ├── pages/              # 각 화면 단위의 페이지
+│   │   └── home/
+│   │       ├── home_page.dart
+│   │       ├── home_viewmodel.dart
+│   │       └── widgets/     # 해당 페이지 전용 위젯 구성요소
+│   │           ├── search_bar.dart
+│   │           ├── data_card.dart
+│   │           └── error_message.dart
 │   ├── viewmodels/     # 상태 및 로직 관리 (Riverpod/StateNotifier 등)
 │   ├── widgets/        # 공용 컴포넌트
 
@@ -87,6 +94,19 @@ lib/
 - 반응형 디자인 적용
 - View와 ViewModel 분리
 - AnimationController, Implicit Animations 사용한 자연스러운 UI 애니메이션 구현
+
+### 🎨 UI/UX & 위젯 구성 가이드
+- 하나의 페이지는 **의미 있는 단위로 위젯을 최대한 분리**하여 구성합니다.
+- 페이지 파일은 `pages/<screen_name>/`에 위치하며, 해당 페이지에서 사용하는 세부 위젯은 `widgets/` 서브폴더에 정리합니다.
+- 위젯 구성 시 다음 원칙을 따릅니다:
+  - 하나의 위젯은 하나의 역할만 담당할 것 (단일 책임 원칙)
+  - 재사용 가능한 위젯은 `presentation/widgets/`에 별도 관리
+  - 상태를 가지는 위젯은 ViewModel과의 의존성을 명확히 관리 (의존성 주입 또는 Provider 참조)
+- ViewModel은 최대한 비즈니스 로직 중심으로 구성하고, UI와는 분리
+
+**예시**  
+- `HomePage`: 검색창, 리스트 뷰, 오류 안내 메시지로 구성  
+  → 각각 `search_bar.dart`, `data_list.dart`, `error_message.dart`로 분리
 
 ### 🔔 백그라운드 및 푸시 알림
 - Workmanager + Firebase Cloud Messaging 활용
