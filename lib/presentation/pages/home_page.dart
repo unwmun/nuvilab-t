@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 import 'package:nubilab/presentation/viewmodels/air_quality_view_model.dart';
 import 'package:nubilab/presentation/widgets/air_quality_item_card.dart';
+import 'package:nubilab/presentation/widgets/sido_selector.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -11,14 +12,16 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final airQualityState = ref.watch(airQualityViewModelProvider);
     final viewModel = ref.read(airQualityViewModelProvider.notifier);
+    final selectedSido = airQualityState.selectedSido;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('대기질 정보'),
         actions: [
+          const SidoSelector(),
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => viewModel.fetchAirQuality('서울'),
+            onPressed: () => viewModel.fetchAirQuality(selectedSido),
           ),
         ],
       ),
@@ -32,7 +35,7 @@ class HomePage extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: airQualityState.when(
+            child: airQualityState.airQuality.when(
               data: (airQualityResponse) {
                 final items = airQualityResponse.response.body.items;
                 if (items.isEmpty) {
@@ -42,7 +45,7 @@ class HomePage extends ConsumerWidget {
                 }
 
                 return RefreshIndicator(
-                  onRefresh: () => viewModel.fetchAirQuality('서울'),
+                  onRefresh: () => viewModel.fetchAirQuality(selectedSido),
                   child: ListView.builder(
                     itemCount: items.length,
                     padding: const EdgeInsets.only(bottom: 16),
@@ -72,7 +75,7 @@ class HomePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () => viewModel.fetchAirQuality('서울'),
+                      onPressed: () => viewModel.fetchAirQuality(selectedSido),
                       child: const Text('다시 시도'),
                     ),
                   ],
