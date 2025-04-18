@@ -758,29 +758,43 @@ AirQualityItem _$AirQualityItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AirQualityItem {
-  String? get so2Grade => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get so2Grade => throw _privateConstructorUsedError;
   String? get coFlag => throw _privateConstructorUsedError;
-  String? get khaiValue => throw _privateConstructorUsedError;
-  String? get so2Value => throw _privateConstructorUsedError;
-  String? get coValue => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get khaiValue => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get so2Value => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get coValue => throw _privateConstructorUsedError;
   String? get pm25Flag => throw _privateConstructorUsedError;
   String? get pm10Flag => throw _privateConstructorUsedError;
-  String? get o3Grade => throw _privateConstructorUsedError;
-  String? get pm10Value => throw _privateConstructorUsedError;
-  String? get khaiGrade => throw _privateConstructorUsedError;
-  String? get pm25Value => throw _privateConstructorUsedError;
-  String? get sidoName => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get o3Grade => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm10Value => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get khaiGrade => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm25Value => throw _privateConstructorUsedError;
+  String get sidoName => throw _privateConstructorUsedError;
   String? get no2Flag => throw _privateConstructorUsedError;
-  String? get no2Grade => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get no2Grade => throw _privateConstructorUsedError;
   String? get o3Flag => throw _privateConstructorUsedError;
-  String? get pm25Grade => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm25Grade => throw _privateConstructorUsedError;
   String? get so2Flag => throw _privateConstructorUsedError;
-  String? get dataTime => throw _privateConstructorUsedError;
-  String? get coGrade => throw _privateConstructorUsedError;
-  String? get no2Value => throw _privateConstructorUsedError;
-  String? get stationName => throw _privateConstructorUsedError;
-  String? get pm10Grade => throw _privateConstructorUsedError;
-  String? get o3Value => throw _privateConstructorUsedError;
+  String get dataTime => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get coGrade => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get no2Value => throw _privateConstructorUsedError;
+  String get stationName => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm10Grade => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
+  String get o3Value => throw _privateConstructorUsedError;
 
   /// Serializes this AirQualityItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -799,29 +813,29 @@ abstract class $AirQualityItemCopyWith<$Res> {
       _$AirQualityItemCopyWithImpl<$Res, AirQualityItem>;
   @useResult
   $Res call(
-      {String? so2Grade,
+      {@JsonKey(fromJson: _stringFromJson) String so2Grade,
       String? coFlag,
-      String? khaiValue,
-      String? so2Value,
-      String? coValue,
+      @JsonKey(fromJson: _stringFromJson) String khaiValue,
+      @JsonKey(fromJson: _stringFromJson) String so2Value,
+      @JsonKey(fromJson: _stringFromJson) String coValue,
       String? pm25Flag,
       String? pm10Flag,
-      String? o3Grade,
-      String? pm10Value,
-      String? khaiGrade,
-      String? pm25Value,
-      String? sidoName,
+      @JsonKey(fromJson: _stringFromJson) String o3Grade,
+      @JsonKey(fromJson: _stringFromJson) String pm10Value,
+      @JsonKey(fromJson: _stringFromJson) String khaiGrade,
+      @JsonKey(fromJson: _stringFromJson) String pm25Value,
+      String sidoName,
       String? no2Flag,
-      String? no2Grade,
+      @JsonKey(fromJson: _stringFromJson) String no2Grade,
       String? o3Flag,
-      String? pm25Grade,
+      @JsonKey(fromJson: _stringFromJson) String pm25Grade,
       String? so2Flag,
-      String? dataTime,
-      String? coGrade,
-      String? no2Value,
-      String? stationName,
-      String? pm10Grade,
-      String? o3Value});
+      String dataTime,
+      @JsonKey(fromJson: _stringFromJson) String coGrade,
+      @JsonKey(fromJson: _stringFromJson) String no2Value,
+      String stationName,
+      @JsonKey(fromJson: _stringFromJson) String pm10Grade,
+      @JsonKey(fromJson: _stringFromJson) String o3Value});
 }
 
 /// @nodoc
@@ -839,51 +853,51 @@ class _$AirQualityItemCopyWithImpl<$Res, $Val extends AirQualityItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? so2Grade = freezed,
+    Object? so2Grade = null,
     Object? coFlag = freezed,
-    Object? khaiValue = freezed,
-    Object? so2Value = freezed,
-    Object? coValue = freezed,
+    Object? khaiValue = null,
+    Object? so2Value = null,
+    Object? coValue = null,
     Object? pm25Flag = freezed,
     Object? pm10Flag = freezed,
-    Object? o3Grade = freezed,
-    Object? pm10Value = freezed,
-    Object? khaiGrade = freezed,
-    Object? pm25Value = freezed,
-    Object? sidoName = freezed,
+    Object? o3Grade = null,
+    Object? pm10Value = null,
+    Object? khaiGrade = null,
+    Object? pm25Value = null,
+    Object? sidoName = null,
     Object? no2Flag = freezed,
-    Object? no2Grade = freezed,
+    Object? no2Grade = null,
     Object? o3Flag = freezed,
-    Object? pm25Grade = freezed,
+    Object? pm25Grade = null,
     Object? so2Flag = freezed,
-    Object? dataTime = freezed,
-    Object? coGrade = freezed,
-    Object? no2Value = freezed,
-    Object? stationName = freezed,
-    Object? pm10Grade = freezed,
-    Object? o3Value = freezed,
+    Object? dataTime = null,
+    Object? coGrade = null,
+    Object? no2Value = null,
+    Object? stationName = null,
+    Object? pm10Grade = null,
+    Object? o3Value = null,
   }) {
     return _then(_value.copyWith(
-      so2Grade: freezed == so2Grade
+      so2Grade: null == so2Grade
           ? _value.so2Grade
           : so2Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       coFlag: freezed == coFlag
           ? _value.coFlag
           : coFlag // ignore: cast_nullable_to_non_nullable
               as String?,
-      khaiValue: freezed == khaiValue
+      khaiValue: null == khaiValue
           ? _value.khaiValue
           : khaiValue // ignore: cast_nullable_to_non_nullable
-              as String?,
-      so2Value: freezed == so2Value
+              as String,
+      so2Value: null == so2Value
           ? _value.so2Value
           : so2Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      coValue: freezed == coValue
+              as String,
+      coValue: null == coValue
           ? _value.coValue
           : coValue // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       pm25Flag: freezed == pm25Flag
           ? _value.pm25Flag
           : pm25Flag // ignore: cast_nullable_to_non_nullable
@@ -892,70 +906,70 @@ class _$AirQualityItemCopyWithImpl<$Res, $Val extends AirQualityItem>
           ? _value.pm10Flag
           : pm10Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      o3Grade: freezed == o3Grade
+      o3Grade: null == o3Grade
           ? _value.o3Grade
           : o3Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pm10Value: freezed == pm10Value
+              as String,
+      pm10Value: null == pm10Value
           ? _value.pm10Value
           : pm10Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      khaiGrade: freezed == khaiGrade
+              as String,
+      khaiGrade: null == khaiGrade
           ? _value.khaiGrade
           : khaiGrade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pm25Value: freezed == pm25Value
+              as String,
+      pm25Value: null == pm25Value
           ? _value.pm25Value
           : pm25Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      sidoName: freezed == sidoName
+              as String,
+      sidoName: null == sidoName
           ? _value.sidoName
           : sidoName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       no2Flag: freezed == no2Flag
           ? _value.no2Flag
           : no2Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      no2Grade: freezed == no2Grade
+      no2Grade: null == no2Grade
           ? _value.no2Grade
           : no2Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       o3Flag: freezed == o3Flag
           ? _value.o3Flag
           : o3Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      pm25Grade: freezed == pm25Grade
+      pm25Grade: null == pm25Grade
           ? _value.pm25Grade
           : pm25Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       so2Flag: freezed == so2Flag
           ? _value.so2Flag
           : so2Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      dataTime: freezed == dataTime
+      dataTime: null == dataTime
           ? _value.dataTime
           : dataTime // ignore: cast_nullable_to_non_nullable
-              as String?,
-      coGrade: freezed == coGrade
+              as String,
+      coGrade: null == coGrade
           ? _value.coGrade
           : coGrade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      no2Value: freezed == no2Value
+              as String,
+      no2Value: null == no2Value
           ? _value.no2Value
           : no2Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      stationName: freezed == stationName
+              as String,
+      stationName: null == stationName
           ? _value.stationName
           : stationName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pm10Grade: freezed == pm10Grade
+              as String,
+      pm10Grade: null == pm10Grade
           ? _value.pm10Grade
           : pm10Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      o3Value: freezed == o3Value
+              as String,
+      o3Value: null == o3Value
           ? _value.o3Value
           : o3Value // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ) as $Val);
   }
 }
@@ -969,29 +983,29 @@ abstract class _$$AirQualityItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? so2Grade,
+      {@JsonKey(fromJson: _stringFromJson) String so2Grade,
       String? coFlag,
-      String? khaiValue,
-      String? so2Value,
-      String? coValue,
+      @JsonKey(fromJson: _stringFromJson) String khaiValue,
+      @JsonKey(fromJson: _stringFromJson) String so2Value,
+      @JsonKey(fromJson: _stringFromJson) String coValue,
       String? pm25Flag,
       String? pm10Flag,
-      String? o3Grade,
-      String? pm10Value,
-      String? khaiGrade,
-      String? pm25Value,
-      String? sidoName,
+      @JsonKey(fromJson: _stringFromJson) String o3Grade,
+      @JsonKey(fromJson: _stringFromJson) String pm10Value,
+      @JsonKey(fromJson: _stringFromJson) String khaiGrade,
+      @JsonKey(fromJson: _stringFromJson) String pm25Value,
+      String sidoName,
       String? no2Flag,
-      String? no2Grade,
+      @JsonKey(fromJson: _stringFromJson) String no2Grade,
       String? o3Flag,
-      String? pm25Grade,
+      @JsonKey(fromJson: _stringFromJson) String pm25Grade,
       String? so2Flag,
-      String? dataTime,
-      String? coGrade,
-      String? no2Value,
-      String? stationName,
-      String? pm10Grade,
-      String? o3Value});
+      String dataTime,
+      @JsonKey(fromJson: _stringFromJson) String coGrade,
+      @JsonKey(fromJson: _stringFromJson) String no2Value,
+      String stationName,
+      @JsonKey(fromJson: _stringFromJson) String pm10Grade,
+      @JsonKey(fromJson: _stringFromJson) String o3Value});
 }
 
 /// @nodoc
@@ -1007,51 +1021,51 @@ class __$$AirQualityItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? so2Grade = freezed,
+    Object? so2Grade = null,
     Object? coFlag = freezed,
-    Object? khaiValue = freezed,
-    Object? so2Value = freezed,
-    Object? coValue = freezed,
+    Object? khaiValue = null,
+    Object? so2Value = null,
+    Object? coValue = null,
     Object? pm25Flag = freezed,
     Object? pm10Flag = freezed,
-    Object? o3Grade = freezed,
-    Object? pm10Value = freezed,
-    Object? khaiGrade = freezed,
-    Object? pm25Value = freezed,
-    Object? sidoName = freezed,
+    Object? o3Grade = null,
+    Object? pm10Value = null,
+    Object? khaiGrade = null,
+    Object? pm25Value = null,
+    Object? sidoName = null,
     Object? no2Flag = freezed,
-    Object? no2Grade = freezed,
+    Object? no2Grade = null,
     Object? o3Flag = freezed,
-    Object? pm25Grade = freezed,
+    Object? pm25Grade = null,
     Object? so2Flag = freezed,
-    Object? dataTime = freezed,
-    Object? coGrade = freezed,
-    Object? no2Value = freezed,
-    Object? stationName = freezed,
-    Object? pm10Grade = freezed,
-    Object? o3Value = freezed,
+    Object? dataTime = null,
+    Object? coGrade = null,
+    Object? no2Value = null,
+    Object? stationName = null,
+    Object? pm10Grade = null,
+    Object? o3Value = null,
   }) {
     return _then(_$AirQualityItemImpl(
-      so2Grade: freezed == so2Grade
+      so2Grade: null == so2Grade
           ? _value.so2Grade
           : so2Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       coFlag: freezed == coFlag
           ? _value.coFlag
           : coFlag // ignore: cast_nullable_to_non_nullable
               as String?,
-      khaiValue: freezed == khaiValue
+      khaiValue: null == khaiValue
           ? _value.khaiValue
           : khaiValue // ignore: cast_nullable_to_non_nullable
-              as String?,
-      so2Value: freezed == so2Value
+              as String,
+      so2Value: null == so2Value
           ? _value.so2Value
           : so2Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      coValue: freezed == coValue
+              as String,
+      coValue: null == coValue
           ? _value.coValue
           : coValue // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       pm25Flag: freezed == pm25Flag
           ? _value.pm25Flag
           : pm25Flag // ignore: cast_nullable_to_non_nullable
@@ -1060,70 +1074,70 @@ class __$$AirQualityItemImplCopyWithImpl<$Res>
           ? _value.pm10Flag
           : pm10Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      o3Grade: freezed == o3Grade
+      o3Grade: null == o3Grade
           ? _value.o3Grade
           : o3Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pm10Value: freezed == pm10Value
+              as String,
+      pm10Value: null == pm10Value
           ? _value.pm10Value
           : pm10Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      khaiGrade: freezed == khaiGrade
+              as String,
+      khaiGrade: null == khaiGrade
           ? _value.khaiGrade
           : khaiGrade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pm25Value: freezed == pm25Value
+              as String,
+      pm25Value: null == pm25Value
           ? _value.pm25Value
           : pm25Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      sidoName: freezed == sidoName
+              as String,
+      sidoName: null == sidoName
           ? _value.sidoName
           : sidoName // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       no2Flag: freezed == no2Flag
           ? _value.no2Flag
           : no2Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      no2Grade: freezed == no2Grade
+      no2Grade: null == no2Grade
           ? _value.no2Grade
           : no2Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       o3Flag: freezed == o3Flag
           ? _value.o3Flag
           : o3Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      pm25Grade: freezed == pm25Grade
+      pm25Grade: null == pm25Grade
           ? _value.pm25Grade
           : pm25Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       so2Flag: freezed == so2Flag
           ? _value.so2Flag
           : so2Flag // ignore: cast_nullable_to_non_nullable
               as String?,
-      dataTime: freezed == dataTime
+      dataTime: null == dataTime
           ? _value.dataTime
           : dataTime // ignore: cast_nullable_to_non_nullable
-              as String?,
-      coGrade: freezed == coGrade
+              as String,
+      coGrade: null == coGrade
           ? _value.coGrade
           : coGrade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      no2Value: freezed == no2Value
+              as String,
+      no2Value: null == no2Value
           ? _value.no2Value
           : no2Value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      stationName: freezed == stationName
+              as String,
+      stationName: null == stationName
           ? _value.stationName
           : stationName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pm10Grade: freezed == pm10Grade
+              as String,
+      pm10Grade: null == pm10Grade
           ? _value.pm10Grade
           : pm10Grade // ignore: cast_nullable_to_non_nullable
-              as String?,
-      o3Value: freezed == o3Value
+              as String,
+      o3Value: null == o3Value
           ? _value.o3Value
           : o3Value // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -1132,79 +1146,93 @@ class __$$AirQualityItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AirQualityItemImpl implements _AirQualityItem {
   const _$AirQualityItemImpl(
-      {required this.so2Grade,
-      required this.coFlag,
-      required this.khaiValue,
-      required this.so2Value,
-      required this.coValue,
-      required this.pm25Flag,
-      required this.pm10Flag,
-      required this.o3Grade,
-      required this.pm10Value,
-      required this.khaiGrade,
-      required this.pm25Value,
+      {@JsonKey(fromJson: _stringFromJson) required this.so2Grade,
+      this.coFlag,
+      @JsonKey(fromJson: _stringFromJson) required this.khaiValue,
+      @JsonKey(fromJson: _stringFromJson) required this.so2Value,
+      @JsonKey(fromJson: _stringFromJson) required this.coValue,
+      this.pm25Flag,
+      this.pm10Flag,
+      @JsonKey(fromJson: _stringFromJson) required this.o3Grade,
+      @JsonKey(fromJson: _stringFromJson) required this.pm10Value,
+      @JsonKey(fromJson: _stringFromJson) required this.khaiGrade,
+      @JsonKey(fromJson: _stringFromJson) required this.pm25Value,
       required this.sidoName,
-      required this.no2Flag,
-      required this.no2Grade,
-      required this.o3Flag,
-      required this.pm25Grade,
-      required this.so2Flag,
+      this.no2Flag,
+      @JsonKey(fromJson: _stringFromJson) required this.no2Grade,
+      this.o3Flag,
+      @JsonKey(fromJson: _stringFromJson) required this.pm25Grade,
+      this.so2Flag,
       required this.dataTime,
-      required this.coGrade,
-      required this.no2Value,
+      @JsonKey(fromJson: _stringFromJson) required this.coGrade,
+      @JsonKey(fromJson: _stringFromJson) required this.no2Value,
       required this.stationName,
-      required this.pm10Grade,
-      required this.o3Value});
+      @JsonKey(fromJson: _stringFromJson) required this.pm10Grade,
+      @JsonKey(fromJson: _stringFromJson) required this.o3Value});
 
   factory _$AirQualityItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$AirQualityItemImplFromJson(json);
 
   @override
-  final String? so2Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  final String so2Grade;
   @override
   final String? coFlag;
   @override
-  final String? khaiValue;
+  @JsonKey(fromJson: _stringFromJson)
+  final String khaiValue;
   @override
-  final String? so2Value;
+  @JsonKey(fromJson: _stringFromJson)
+  final String so2Value;
   @override
-  final String? coValue;
+  @JsonKey(fromJson: _stringFromJson)
+  final String coValue;
   @override
   final String? pm25Flag;
   @override
   final String? pm10Flag;
   @override
-  final String? o3Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  final String o3Grade;
   @override
-  final String? pm10Value;
+  @JsonKey(fromJson: _stringFromJson)
+  final String pm10Value;
   @override
-  final String? khaiGrade;
+  @JsonKey(fromJson: _stringFromJson)
+  final String khaiGrade;
   @override
-  final String? pm25Value;
+  @JsonKey(fromJson: _stringFromJson)
+  final String pm25Value;
   @override
-  final String? sidoName;
+  final String sidoName;
   @override
   final String? no2Flag;
   @override
-  final String? no2Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  final String no2Grade;
   @override
   final String? o3Flag;
   @override
-  final String? pm25Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  final String pm25Grade;
   @override
   final String? so2Flag;
   @override
-  final String? dataTime;
+  final String dataTime;
   @override
-  final String? coGrade;
+  @JsonKey(fromJson: _stringFromJson)
+  final String coGrade;
   @override
-  final String? no2Value;
+  @JsonKey(fromJson: _stringFromJson)
+  final String no2Value;
   @override
-  final String? stationName;
+  final String stationName;
   @override
-  final String? pm10Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  final String pm10Grade;
   @override
-  final String? o3Value;
+  @JsonKey(fromJson: _stringFromJson)
+  final String o3Value;
 
   @override
   String toString() {
@@ -1304,79 +1332,94 @@ class _$AirQualityItemImpl implements _AirQualityItem {
 
 abstract class _AirQualityItem implements AirQualityItem {
   const factory _AirQualityItem(
-      {required final String? so2Grade,
-      required final String? coFlag,
-      required final String? khaiValue,
-      required final String? so2Value,
-      required final String? coValue,
-      required final String? pm25Flag,
-      required final String? pm10Flag,
-      required final String? o3Grade,
-      required final String? pm10Value,
-      required final String? khaiGrade,
-      required final String? pm25Value,
-      required final String? sidoName,
-      required final String? no2Flag,
-      required final String? no2Grade,
-      required final String? o3Flag,
-      required final String? pm25Grade,
-      required final String? so2Flag,
-      required final String? dataTime,
-      required final String? coGrade,
-      required final String? no2Value,
-      required final String? stationName,
-      required final String? pm10Grade,
-      required final String? o3Value}) = _$AirQualityItemImpl;
+          {@JsonKey(fromJson: _stringFromJson) required final String so2Grade,
+          final String? coFlag,
+          @JsonKey(fromJson: _stringFromJson) required final String khaiValue,
+          @JsonKey(fromJson: _stringFromJson) required final String so2Value,
+          @JsonKey(fromJson: _stringFromJson) required final String coValue,
+          final String? pm25Flag,
+          final String? pm10Flag,
+          @JsonKey(fromJson: _stringFromJson) required final String o3Grade,
+          @JsonKey(fromJson: _stringFromJson) required final String pm10Value,
+          @JsonKey(fromJson: _stringFromJson) required final String khaiGrade,
+          @JsonKey(fromJson: _stringFromJson) required final String pm25Value,
+          required final String sidoName,
+          final String? no2Flag,
+          @JsonKey(fromJson: _stringFromJson) required final String no2Grade,
+          final String? o3Flag,
+          @JsonKey(fromJson: _stringFromJson) required final String pm25Grade,
+          final String? so2Flag,
+          required final String dataTime,
+          @JsonKey(fromJson: _stringFromJson) required final String coGrade,
+          @JsonKey(fromJson: _stringFromJson) required final String no2Value,
+          required final String stationName,
+          @JsonKey(fromJson: _stringFromJson) required final String pm10Grade,
+          @JsonKey(fromJson: _stringFromJson) required final String o3Value}) =
+      _$AirQualityItemImpl;
 
   factory _AirQualityItem.fromJson(Map<String, dynamic> json) =
       _$AirQualityItemImpl.fromJson;
 
   @override
-  String? get so2Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  String get so2Grade;
   @override
   String? get coFlag;
   @override
-  String? get khaiValue;
+  @JsonKey(fromJson: _stringFromJson)
+  String get khaiValue;
   @override
-  String? get so2Value;
+  @JsonKey(fromJson: _stringFromJson)
+  String get so2Value;
   @override
-  String? get coValue;
+  @JsonKey(fromJson: _stringFromJson)
+  String get coValue;
   @override
   String? get pm25Flag;
   @override
   String? get pm10Flag;
   @override
-  String? get o3Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  String get o3Grade;
   @override
-  String? get pm10Value;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm10Value;
   @override
-  String? get khaiGrade;
+  @JsonKey(fromJson: _stringFromJson)
+  String get khaiGrade;
   @override
-  String? get pm25Value;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm25Value;
   @override
-  String? get sidoName;
+  String get sidoName;
   @override
   String? get no2Flag;
   @override
-  String? get no2Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  String get no2Grade;
   @override
   String? get o3Flag;
   @override
-  String? get pm25Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm25Grade;
   @override
   String? get so2Flag;
   @override
-  String? get dataTime;
+  String get dataTime;
   @override
-  String? get coGrade;
+  @JsonKey(fromJson: _stringFromJson)
+  String get coGrade;
   @override
-  String? get no2Value;
+  @JsonKey(fromJson: _stringFromJson)
+  String get no2Value;
   @override
-  String? get stationName;
+  String get stationName;
   @override
-  String? get pm10Grade;
+  @JsonKey(fromJson: _stringFromJson)
+  String get pm10Grade;
   @override
-  String? get o3Value;
+  @JsonKey(fromJson: _stringFromJson)
+  String get o3Value;
 
   /// Create a copy of AirQualityItem
   /// with the given fields replaced by the non-null parameter values.

@@ -50,31 +50,36 @@ class Header with _$Header {
 @freezed
 class AirQualityItem with _$AirQualityItem {
   const factory AirQualityItem({
-    required String? so2Grade,
-    required String? coFlag,
-    required String? khaiValue,
-    required String? so2Value,
-    required String? coValue,
-    required String? pm25Flag,
-    required String? pm10Flag,
-    required String? o3Grade,
-    required String? pm10Value,
-    required String? khaiGrade,
-    required String? pm25Value,
-    required String? sidoName,
-    required String? no2Flag,
-    required String? no2Grade,
-    required String? o3Flag,
-    required String? pm25Grade,
-    required String? so2Flag,
-    required String? dataTime,
-    required String? coGrade,
-    required String? no2Value,
-    required String? stationName,
-    required String? pm10Grade,
-    required String? o3Value,
+    @JsonKey(fromJson: _stringFromJson) required String so2Grade,
+    String? coFlag,
+    @JsonKey(fromJson: _stringFromJson) required String khaiValue,
+    @JsonKey(fromJson: _stringFromJson) required String so2Value,
+    @JsonKey(fromJson: _stringFromJson) required String coValue,
+    String? pm25Flag,
+    String? pm10Flag,
+    @JsonKey(fromJson: _stringFromJson) required String o3Grade,
+    @JsonKey(fromJson: _stringFromJson) required String pm10Value,
+    @JsonKey(fromJson: _stringFromJson) required String khaiGrade,
+    @JsonKey(fromJson: _stringFromJson) required String pm25Value,
+    required String sidoName,
+    String? no2Flag,
+    @JsonKey(fromJson: _stringFromJson) required String no2Grade,
+    String? o3Flag,
+    @JsonKey(fromJson: _stringFromJson) required String pm25Grade,
+    String? so2Flag,
+    required String dataTime,
+    @JsonKey(fromJson: _stringFromJson) required String coGrade,
+    @JsonKey(fromJson: _stringFromJson) required String no2Value,
+    required String stationName,
+    @JsonKey(fromJson: _stringFromJson) required String pm10Grade,
+    @JsonKey(fromJson: _stringFromJson) required String o3Value,
   }) = _AirQualityItem;
 
   factory AirQualityItem.fromJson(Map<String, dynamic> json) =>
       _$AirQualityItemFromJson(json);
+}
+
+String _stringFromJson(dynamic value) {
+  if (value == null) return '';
+  return value.toString();
 }
