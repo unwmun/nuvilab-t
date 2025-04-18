@@ -1,6 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'package:nubilab/data/models/air_quality.dart';
+import 'package:nubilab/data/repositories/air_quality_repository_impl.dart';
+import 'package:nubilab/data/datasources/air_quality_api.dart';
+import 'package:dio/dio.dart';
+
+final dioProvider = Provider((ref) => Dio());
+
+final airQualityApiProvider =
+    Provider((ref) => AirQualityApi(ref.watch(dioProvider)));
+
+final airQualityRepositoryProvider = Provider(
+    (ref) => AirQualityRepositoryImpl(ref.watch(airQualityApiProvider)));
+
+final getAirQualityUseCaseProvider = Provider(
+    (ref) => GetAirQualityUseCase(ref.watch(airQualityRepositoryProvider)));
 
 final airQualityViewModelProvider =
     StateNotifierProvider<AirQualityViewModel, AsyncValue<AirQualityResponse>>(

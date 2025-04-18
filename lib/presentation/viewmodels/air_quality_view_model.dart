@@ -17,12 +17,19 @@ class AirQualityViewModel
   final GetAirQualityUseCase _getAirQualityUseCase;
   DateTime? _lastUpdated;
   Timer? _updateTimer;
+  String _selectedSidoName = '서울';
 
   AirQualityViewModel(this._getAirQualityUseCase)
       : super(const AsyncValue.loading()) {
     _fetchAirQuality();
     _startPeriodicUpdate();
     _startLastUpdatedTimer();
+  }
+
+  String get selectedSidoName => _selectedSidoName;
+
+  void setSelectedSidoName(String sidoName) {
+    _selectedSidoName = sidoName;
   }
 
   @override
@@ -60,7 +67,8 @@ class AirQualityViewModel
   Future<void> _fetchAirQuality() async {
     try {
       state = const AsyncValue.loading();
-      final result = await _getAirQualityUseCase.execute(sidoName: '서울');
+      final result =
+          await _getAirQualityUseCase.execute(sidoName: _selectedSidoName);
       state = AsyncValue.data(result);
       _lastUpdated = DateTime.now();
     } catch (error, stackTrace) {
@@ -76,6 +84,7 @@ class AirQualityViewModel
   }
 
   Future<void> fetchAirQuality(String sidoName) async {
+    _selectedSidoName = sidoName;
     await _fetchAirQuality();
   }
 }
