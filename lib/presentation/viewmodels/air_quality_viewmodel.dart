@@ -1,34 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/di/dependency_injection.dart';
-import 'package:nubilab/data/models/air_quality.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
-import 'dart:async';
+import 'package:nubilab/data/models/air_quality.dart';
 
 final airQualityViewModelProvider =
     StateNotifierProvider<AirQualityViewModel, AsyncValue<AirQualityResponse>>(
-        (ref) => AirQualityViewModel(ref.watch(getAirQualityUseCaseProvider)));
-
-// 저장소 프로바이더는 실제 의존성 주입 설정에서 제공되어야 합니다.
-final airQualityRepositoryProvider =
-    Provider((ref) => throw UnimplementedError());
+  (ref) => AirQualityViewModel(ref.watch(getAirQualityUseCaseProvider)),
+);
 
 class AirQualityViewModel
     extends StateNotifier<AsyncValue<AirQualityResponse>> {
   final GetAirQualityUseCase _getAirQualityUseCase;
   DateTime? _lastUpdated;
-  Timer? _updateTimer;
 
   AirQualityViewModel(this._getAirQualityUseCase)
       : super(const AsyncValue.loading()) {
     _fetchAirQuality();
     _startPeriodicUpdate();
-    _startLastUpdatedTimer();
-  }
-
-  @override
-  void dispose() {
-    _updateTimer?.cancel();
-    super.dispose();
   }
 
   DateTime? get lastUpdated => _lastUpdated;
@@ -46,15 +33,6 @@ class AirQualityViewModel
     } else {
       return '${difference.inHours}시간 전';
     }
-  }
-
-  void _startLastUpdatedTimer() {
-    _updateTimer?.cancel();
-    _updateTimer = Timer.periodic(const Duration(minutes: 1), (_) {
-      if (state.hasValue) {
-        state = AsyncValue.data(state.value!);
-      }
-    });
   }
 
   Future<void> _fetchAirQuality() async {
@@ -75,7 +53,7 @@ class AirQualityViewModel
     });
   }
 
-  Future<void> fetchAirQuality(String sidoName) async {
+  Future<void> refresh() async {
     await _fetchAirQuality();
   }
 }
