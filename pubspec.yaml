@@ -1,0 +1,55 @@
+name: nubilab
+description: 공공기관 API 연동 및 고급 기능 구현 모바일 앱
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # 상태관리
+  riverpod: ^2.4.9
+  flutter_riverpod: ^2.4.9
+  # 네트워크
+  dio: ^5.4.0
+  # 모델링/직렬화
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  # 로컬 저장소
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  # 의존성 주입
+  get_it: ^7.6.7
+  injectable: ^2.3.2
+  # 보안
+  flutter_secure_storage: ^9.0.0
+  # 백그라운드 작업
+  workmanager: ^0.5.2
+  # 푸시 알림
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.7.10
+  # 로깅 및 모니터링
+  firebase_crashlytics: ^3.4.9
+  # UI
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  # 린트
+  flutter_lints: ^3.0.1
+  # 코드 생성
+  build_runner: ^2.4.8
+  freezed: ^2.4.6
+  json_serializable: ^6.7.1
+  injectable_generator: ^2.4.1
+  # 테스트
+  mockito: ^5.4.4
+  http_mock_adapter: ^0.6.1
+
+flutter:
+  uses-material-design: true
