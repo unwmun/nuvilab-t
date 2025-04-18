@@ -27,11 +27,6 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   # 백그라운드 작업
   workmanager: ^0.5.2
-  # 푸시 알림
-  firebase_core: ^2.24.2
-  firebase_messaging: ^14.7.10
-  # 로깅 및 모니터링
-  firebase_crashlytics: ^3.4.9
   # UI
   cupertino_icons: ^1.0.6
 
