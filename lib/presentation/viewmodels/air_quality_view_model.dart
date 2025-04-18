@@ -1,12 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/di/dependency_injection.dart';
+import 'package:nubilab/core/di/dependency_injection.dart' as di;
 import 'package:nubilab/data/models/air_quality.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'dart:async';
 
 final airQualityViewModelProvider =
     StateNotifierProvider<AirQualityViewModel, AsyncValue<AirQualityResponse>>(
-        (ref) => AirQualityViewModel(ref.watch(getAirQualityUseCaseProvider)));
+        (ref) =>
+            AirQualityViewModel(ref.watch(di.getAirQualityUseCaseProvider)));
 
 // 저장소 프로바이더는 실제 의존성 주입 설정에서 제공되어야 합니다.
 final airQualityRepositoryProvider =
@@ -17,19 +18,12 @@ class AirQualityViewModel
   final GetAirQualityUseCase _getAirQualityUseCase;
   DateTime? _lastUpdated;
   Timer? _updateTimer;
-  String _selectedSidoName = '서울';
 
   AirQualityViewModel(this._getAirQualityUseCase)
       : super(const AsyncValue.loading()) {
     _fetchAirQuality();
     _startPeriodicUpdate();
     _startLastUpdatedTimer();
-  }
-
-  String get selectedSidoName => _selectedSidoName;
-
-  void setSelectedSidoName(String sidoName) {
-    _selectedSidoName = sidoName;
   }
 
   @override
@@ -67,8 +61,7 @@ class AirQualityViewModel
   Future<void> _fetchAirQuality() async {
     try {
       state = const AsyncValue.loading();
-      final result =
-          await _getAirQualityUseCase.execute(sidoName: _selectedSidoName);
+      final result = await _getAirQualityUseCase.execute(sidoName: '서울');
       state = AsyncValue.data(result);
       _lastUpdated = DateTime.now();
     } catch (error, stackTrace) {
@@ -84,7 +77,6 @@ class AirQualityViewModel
   }
 
   Future<void> fetchAirQuality(String sidoName) async {
-    _selectedSidoName = sidoName;
     await _fetchAirQuality();
   }
 }
