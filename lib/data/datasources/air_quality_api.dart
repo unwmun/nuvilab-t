@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 
+@injectable
 class AirQualityApi {
   final Dio _dio;
   final String _baseUrl = 'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc';
