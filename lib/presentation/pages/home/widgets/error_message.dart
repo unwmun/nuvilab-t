@@ -27,7 +27,7 @@ class ErrorMessage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '${stackTrace.toString().split('\n').first}',
+            stackTrace.toString().split('\n').first,
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 16),

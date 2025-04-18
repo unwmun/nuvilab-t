@@ -39,7 +39,6 @@ linter:
     - prefer_contains
 
     # 보안 관련 규칙
-    - avoid_hardcoded_catch_blocks
     - secure_pubspec_urls
 
 analyzer:

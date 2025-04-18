@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nubilab/data/datasources/air_quality_api.dart';
-import 'package:nubilab/data/repositories/air_quality_repository_impl.dart';
 import 'package:nubilab/domain/repositories/air_quality_repository.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'dependency_injection.config.dart';

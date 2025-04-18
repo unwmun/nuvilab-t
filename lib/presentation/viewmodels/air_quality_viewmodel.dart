@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'package:nubilab/data/models/air_quality.dart';
+import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 
 final airQualityViewModelProvider =
     StateNotifierProvider<AirQualityViewModel, AsyncValue<AirQualityResponse>>(

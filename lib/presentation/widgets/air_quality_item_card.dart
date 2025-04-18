@@ -19,7 +19,7 @@ class AirQualityItemCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${item.stationName}',
+                  item.stationName,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
