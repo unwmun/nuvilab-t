@@ -1,0 +1,138 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Rule: Flutter 기반 공공 API 연동 앱 개발 가이드 (MVVM 아키텍처 적용)
+
+## Domain
+Flutter, Public API, Mobile App, 한국 공공데이터 포털, MVVM 아키텍처
+
+## Description
+Flutter로 개발하는 공공기관 API 연동 모바일 앱 과제를 위한 기술 가이드입니다. 본 룰은 MVVM 아키텍처를 기준으로 구성되며, 네트워크 처리, 상태 관리, 데이터 관리, UI/UX, 성능 최적화, 보안, 테스트 등 실무 기반 구현 원칙을 포함합니다.
+
+## 기술 스택
+
+- **프레임워크**: Flutter 3.x
+- **상태관리**: Riverpod
+- **네트워크**: Dio
+- **데이터 모델링**: Freezed, json_serializable
+- **로컬 저장소**: Hive
+- **의존성 주입**: get_it, injectable
+- **보안**: flutter_secure_storage
+- **백그라운드 작업**: Workmanager
+- **푸시 알림**: Firebase Cloud Messaging
+- **모니터링**: Firebase Crashlytics
+
+## Rules
+
+### 🏗️ 아키텍처 및 폴더 구조 (MVVM)
+MVVM 아키텍처를 기반으로 다음과 같은 패키지 구조를 따릅니다:
+
+lib/
+├── core/               # 공통 유틸, 상수, 공통 위젯 등
+├── data/               # 데이터 소스 (API, DB), 모델 정의
+│   ├── models/         # Freezed 모델 정의
+│   ├── datasources/    # API 및 로컬 데이터 소스 구현
+├── domain/             # 비즈니스 로직 및 엔티티 정의
+│   ├── repositories/   # 추상화된 리포지토리 인터페이스
+│   ├── usecases/       # 유스케이스 (비즈니스 로직 캡슐화)
+├── presentation/       # UI 계층 (View + ViewModel)
+│   ├── pages/          # 화면별 UI
+│   ├── viewmodels/     # 상태 및 로직 관리 (Riverpod/StateNotifier 등)
+│   ├── widgets/        # 공용 컴포넌트
+
+- ViewModel은 상태 로직을 포함하고, presentation 계층의 UI에서 구독됩니다.
+- ViewModel은 UseCase를 호출하고, UseCase는 Repository를 통해 data 계층에 접근합니다.
+
+### 코딩 컨벤션
+
+- analysis_options.yaml에 정의된 린트 규칙 준수
+- 명확한 네이밍과 문서화
+- 단일 책임 원칙 준수
+- 테스트 코드 작성 필수
+
+### 성능 최적화
+
+- 이미지 캐싱 및 지연 로딩
+- 메모리 누수 방지
+- 불필요한 빌드 최소화
+- 네트워크 요청 최적화
+
+### 📡 네트워크 처리 및 에러 핸들링
+
+- Dio 패키지를 사용해 RESTful API 호출
+- `Freezed` 및 `json_serializable`을 사용해 응답 데이터 모델링
+- **HTTP 상태 코드별로 에러 처리**를 세분화해야 함:
+  - `4xx`: 클라이언트 에러 (예: 인증 실패, 잘못된 요청) → 사용자에게 알림 또는 로그인 유도
+  - `5xx`: 서버 에러 → "서버에 문제가 발생했습니다" 안내
+  - `timeout`, `no connection` 등의 **네트워크 에러**는 오프라인 상태로 인식하고 재시도 안내 제공
+- 사용자 피드백은 Snackbar, Dialog, 또는 별도 화면을 통해 제공
+- 공통 예외 클래스를 정의하고, 도메인 계층에서는 명확하게 예외 타입을 분기 처리할 것
+
+### 🔄 상태 관리 및 반응형 프로그래밍
+- Riverpod 또는 GetX를 사용하여 상태를 관리합니다.
+- ViewModel은 상태를 정의하고, View는 이를 구독하여 반응형으로 UI를 갱신합니다.
+- 상태 변화에 따른 효율적인 UI 업데이트가 이루어져야 합니다.
+- Future 및 Stream을 활용하여 비동기 흐름을 자연스럽게 처리해야 합니다.
+- 로딩, 성공, 실패 상태 등을 명확하게 구분할 수 있는 상태 모델링이 필요합니다 (예: AsyncValue, sealed class).
+
+### 💾 데이터 관리
+- Hive를 이용한 로컬 DB 구성
+- 데이터 갱신 및 오프라인 지원 포함
+- 시간 기반 캐싱 전략 포함 (예: 10분 기준)
+
+### 🎨 UI/UX & 접근성
+- Material 3 적용, 다크 모드 대응
+- 반응형 디자인 적용
+- View와 ViewModel 분리
+- AnimationController, Implicit Animations 사용한 자연스러운 UI 애니메이션 구현
+
+### 🔔 백그라운드 및 푸시 알림
+- Workmanager + Firebase Cloud Messaging 활용
+- 딥링크로 특정 화면 이동 
+
+### 🔐 보안
+- flutter_secure_storage, HTTPS, SSL Pinning 적용
+- 릴리즈 빌드에서 디버그 모드 차단
+
+### 🚀 성능 최적화
+- DevTools, Crashlytics로 성능 및 에러 모니터링
+
+### 🧪 테스트
+- 단위 테스트(flutter_test): ViewModel, UseCase, Repository
+- 통합 테스트(integration_test): UI 및 주요 시나리오 흐름
+- http_mock_adapter 등으로 Mock API 구성
+
+## Naming Convention
+커밋 메시지는 아래의 prefix 규칙을 따릅니다:
+
+- `feat:` 새로운 기능 추가  
+  예: `feat: 공공데이터 API 연동 기능 구현`
+
+- `fix:` 버그 수정  
+  예: `fix: 로컬 DB와 API 간 동기화 충돌 해결`
+
+- `chore:` 빌드, 설정, 문서 등 코드 외 작업  
+  예: `chore: README 설치 방법 추가`
+
+- `patch:` 기존 기능의 세부 개선 또는 미세 수정  
+  예: `patch: 네트워크 로딩 메시지 개선`
+
+- `refactor:` 리팩토링 (기능 변경 없이 코드 구조 개선)  
+  예: `refactor: ViewModel 로직 분리`
+
+- `test:` 테스트 코드 추가 또는 수정  
+  예: `test: UseCase 단위 테스트 추가`
+
+- `style:` 포맷팅, 세미콜론 등 스타일 수정 (기능 영향 없음)  
+  예: `style: 코드 정리 및 들여쓰기 수정`
+
+**추가 권장 사항**
+- 하나의 커밋에는 하나의 목적만 포함하세요.
+- 이슈 해결 시 `fix:`와 함께 해결된 문제를 명확히 명시하세요.
+- 커밋 메시지는 영어 또는 한글 중 일관되게 사용하세요.
+
+## Lint Recommendations
+- null safety, 분석기 설정 활용
+- ViewModel은 최대한 UI 로직에 집중하고, 데이터 가공은 UseCase에서 처리
