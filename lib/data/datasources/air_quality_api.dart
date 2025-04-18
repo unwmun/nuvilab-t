@@ -41,9 +41,18 @@ class AirQualityApi {
       );
 
       print('API 응답 데이터: ${response.data}');
-      print('응답 데이터 타입: ${response.data.runtimeType}');
 
-      return AirQualityResponse.fromJson(response.data);
+      try {
+        return AirQualityResponse.fromJson(response.data);
+      } catch (e, stackTrace) {
+        print('JSON 파싱 에러 발생');
+        print('에러 타입: ${e.runtimeType}');
+        print('에러 메시지: $e');
+        print('응답 데이터 구조:');
+        _printJsonStructure(response.data);
+        print('스택 트레이스: $stackTrace');
+        rethrow;
+      }
     } on DioException catch (e) {
       print('Dio 에러 발생: ${e.message}');
       print('에러 응답: ${e.response?.data}');
@@ -54,22 +63,41 @@ class AirQualityApi {
     }
   }
 
+  void _printJsonStructure(dynamic data, [String indent = '']) {
+    if (data == null) {
+      print('${indent}null');
+      return;
+    }
+
+    if (data is Map) {
+      print('${indent}{');
+      data.forEach((key, value) {
+        print('$indent  $key: ${value.runtimeType}');
+        if (value is Map || value is List) {
+          _printJsonStructure(value, '$indent  ');
+        }
+      });
+      print('$indent}');
+    } else if (data is List) {
+      print('${indent}[');
+      if (data.isNotEmpty) {
+        print('$indent  ${data.first.runtimeType}');
+        if (data.first is Map || data.first is List) {
+          _printJsonStructure(data.first, '$indent  ');
+        }
+      }
+      print('$indent]');
+    }
+  }
+
   Exception _handleDioError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return Exception('서버 연결 시간이 초과되었습니다. 네트워크 상태를 확인해주세요.');
+        return Exception('서버 연결 시간이 초과되었습니다.');
       case DioExceptionType.badResponse:
-        final statusCode = e.response?.statusCode;
-        if (statusCode != null) {
-          if (statusCode >= 400 && statusCode < 500) {
-            return Exception('요청이 잘못되었습니다. (${statusCode})');
-          } else if (statusCode >= 500) {
-            return Exception('서버에 문제가 발생했습니다. (${statusCode})');
-          }
-        }
-        return Exception('응답 처리 중 오류가 발생했습니다.');
+        return Exception('서버 응답 오류: ${e.response?.statusCode}');
       case DioExceptionType.cancel:
         return Exception('요청이 취소되었습니다.');
       default:

@@ -777,6 +777,7 @@ mixin _$AirQualityItem {
   String get khaiGrade => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _stringFromJson)
   String get pm25Value => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
   String get sidoName => throw _privateConstructorUsedError;
   String? get no2Flag => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _stringFromJson)
@@ -785,11 +786,13 @@ mixin _$AirQualityItem {
   @JsonKey(fromJson: _stringFromJson)
   String get pm25Grade => throw _privateConstructorUsedError;
   String? get so2Flag => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
   String get dataTime => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _stringFromJson)
   String get coGrade => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _stringFromJson)
   String get no2Value => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringFromJson)
   String get stationName => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _stringFromJson)
   String get pm10Grade => throw _privateConstructorUsedError;
@@ -824,16 +827,16 @@ abstract class $AirQualityItemCopyWith<$Res> {
       @JsonKey(fromJson: _stringFromJson) String pm10Value,
       @JsonKey(fromJson: _stringFromJson) String khaiGrade,
       @JsonKey(fromJson: _stringFromJson) String pm25Value,
-      String sidoName,
+      @JsonKey(fromJson: _stringFromJson) String sidoName,
       String? no2Flag,
       @JsonKey(fromJson: _stringFromJson) String no2Grade,
       String? o3Flag,
       @JsonKey(fromJson: _stringFromJson) String pm25Grade,
       String? so2Flag,
-      String dataTime,
+      @JsonKey(fromJson: _stringFromJson) String dataTime,
       @JsonKey(fromJson: _stringFromJson) String coGrade,
       @JsonKey(fromJson: _stringFromJson) String no2Value,
-      String stationName,
+      @JsonKey(fromJson: _stringFromJson) String stationName,
       @JsonKey(fromJson: _stringFromJson) String pm10Grade,
       @JsonKey(fromJson: _stringFromJson) String o3Value});
 }
@@ -994,16 +997,16 @@ abstract class _$$AirQualityItemImplCopyWith<$Res>
       @JsonKey(fromJson: _stringFromJson) String pm10Value,
       @JsonKey(fromJson: _stringFromJson) String khaiGrade,
       @JsonKey(fromJson: _stringFromJson) String pm25Value,
-      String sidoName,
+      @JsonKey(fromJson: _stringFromJson) String sidoName,
       String? no2Flag,
       @JsonKey(fromJson: _stringFromJson) String no2Grade,
       String? o3Flag,
       @JsonKey(fromJson: _stringFromJson) String pm25Grade,
       String? so2Flag,
-      String dataTime,
+      @JsonKey(fromJson: _stringFromJson) String dataTime,
       @JsonKey(fromJson: _stringFromJson) String coGrade,
       @JsonKey(fromJson: _stringFromJson) String no2Value,
-      String stationName,
+      @JsonKey(fromJson: _stringFromJson) String stationName,
       @JsonKey(fromJson: _stringFromJson) String pm10Grade,
       @JsonKey(fromJson: _stringFromJson) String o3Value});
 }
@@ -1157,16 +1160,16 @@ class _$AirQualityItemImpl implements _AirQualityItem {
       @JsonKey(fromJson: _stringFromJson) required this.pm10Value,
       @JsonKey(fromJson: _stringFromJson) required this.khaiGrade,
       @JsonKey(fromJson: _stringFromJson) required this.pm25Value,
-      required this.sidoName,
+      @JsonKey(fromJson: _stringFromJson) required this.sidoName,
       this.no2Flag,
       @JsonKey(fromJson: _stringFromJson) required this.no2Grade,
       this.o3Flag,
       @JsonKey(fromJson: _stringFromJson) required this.pm25Grade,
       this.so2Flag,
-      required this.dataTime,
+      @JsonKey(fromJson: _stringFromJson) required this.dataTime,
       @JsonKey(fromJson: _stringFromJson) required this.coGrade,
       @JsonKey(fromJson: _stringFromJson) required this.no2Value,
-      required this.stationName,
+      @JsonKey(fromJson: _stringFromJson) required this.stationName,
       @JsonKey(fromJson: _stringFromJson) required this.pm10Grade,
       @JsonKey(fromJson: _stringFromJson) required this.o3Value});
 
@@ -1204,6 +1207,7 @@ class _$AirQualityItemImpl implements _AirQualityItem {
   @JsonKey(fromJson: _stringFromJson)
   final String pm25Value;
   @override
+  @JsonKey(fromJson: _stringFromJson)
   final String sidoName;
   @override
   final String? no2Flag;
@@ -1218,6 +1222,7 @@ class _$AirQualityItemImpl implements _AirQualityItem {
   @override
   final String? so2Flag;
   @override
+  @JsonKey(fromJson: _stringFromJson)
   final String dataTime;
   @override
   @JsonKey(fromJson: _stringFromJson)
@@ -1226,6 +1231,7 @@ class _$AirQualityItemImpl implements _AirQualityItem {
   @JsonKey(fromJson: _stringFromJson)
   final String no2Value;
   @override
+  @JsonKey(fromJson: _stringFromJson)
   final String stationName;
   @override
   @JsonKey(fromJson: _stringFromJson)
@@ -1343,16 +1349,16 @@ abstract class _AirQualityItem implements AirQualityItem {
           @JsonKey(fromJson: _stringFromJson) required final String pm10Value,
           @JsonKey(fromJson: _stringFromJson) required final String khaiGrade,
           @JsonKey(fromJson: _stringFromJson) required final String pm25Value,
-          required final String sidoName,
+          @JsonKey(fromJson: _stringFromJson) required final String sidoName,
           final String? no2Flag,
           @JsonKey(fromJson: _stringFromJson) required final String no2Grade,
           final String? o3Flag,
           @JsonKey(fromJson: _stringFromJson) required final String pm25Grade,
           final String? so2Flag,
-          required final String dataTime,
+          @JsonKey(fromJson: _stringFromJson) required final String dataTime,
           @JsonKey(fromJson: _stringFromJson) required final String coGrade,
           @JsonKey(fromJson: _stringFromJson) required final String no2Value,
-          required final String stationName,
+          @JsonKey(fromJson: _stringFromJson) required final String stationName,
           @JsonKey(fromJson: _stringFromJson) required final String pm10Grade,
           @JsonKey(fromJson: _stringFromJson) required final String o3Value}) =
       _$AirQualityItemImpl;
@@ -1391,6 +1397,7 @@ abstract class _AirQualityItem implements AirQualityItem {
   @JsonKey(fromJson: _stringFromJson)
   String get pm25Value;
   @override
+  @JsonKey(fromJson: _stringFromJson)
   String get sidoName;
   @override
   String? get no2Flag;
@@ -1405,6 +1412,7 @@ abstract class _AirQualityItem implements AirQualityItem {
   @override
   String? get so2Flag;
   @override
+  @JsonKey(fromJson: _stringFromJson)
   String get dataTime;
   @override
   @JsonKey(fromJson: _stringFromJson)
@@ -1413,6 +1421,7 @@ abstract class _AirQualityItem implements AirQualityItem {
   @JsonKey(fromJson: _stringFromJson)
   String get no2Value;
   @override
+  @JsonKey(fromJson: _stringFromJson)
   String get stationName;
   @override
   @JsonKey(fromJson: _stringFromJson)
