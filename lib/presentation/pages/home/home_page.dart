@@ -13,12 +13,57 @@ import 'package:nubilab/presentation/pages/settings/settings_page.dart';
 import 'package:nubilab/presentation/viewmodels/air_quality_view_model.dart';
 import 'package:nubilab/presentation/widgets/sido_selector.dart';
 import 'package:flutter/foundation.dart';
+import 'package:nubilab/core/services/route_service.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    _subscribeToDeeepLinks();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _subscribeToDeeepLinks() {
+    // 시도 변경 이벤트 구독
+    final routeService = ref.read(routeServiceProvider);
+    routeService.sidoChangeStream.listen((sido) {
+      debugPrint('HomePage에서 시도 변경 이벤트 수신: $sido');
+      _changeSido(sido);
+    });
+  }
+
+  void _changeSido(String sido) {
+    final viewModel = ref.read(airQualityViewModelProvider.notifier);
+    final currentSido = viewModel.selectedSido;
+
+    debugPrint('시도 변경 실행: $currentSido -> $sido');
+
+    // 시도 변경 및 데이터 로드
+    viewModel.updateSido(sido);
+    viewModel.fetchAirQuality(sido);
+
+    // 사용자에게 피드백
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('시도를 $sido(으)로 변경했습니다'),
+        duration: const Duration(seconds: 1),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final airQualityState = ref.watch(airQualityViewModelProvider);
     final viewModel = ref.read(airQualityViewModelProvider.notifier);
     final selectedSido = airQualityState.selectedSido;
@@ -96,23 +141,27 @@ class HomePage extends ConsumerWidget {
             await fcmService.showTestNotification();
 
             // 테스트 알림이 발송되었음을 사용자에게 알림
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('테스트 알림이 발송되었습니다.'),
-                duration: Duration(seconds: 2),
-              ),
-            );
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('테스트 알림이 발송되었습니다.'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
           } catch (e, stack) {
             debugPrint('FCM 테스트 중 오류: $e');
             debugPrint('스택 트레이스: $stack');
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('오류 발생: $e'),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 5),
-              ),
-            );
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('오류 발생: $e'),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 5),
+                ),
+              );
+            }
           }
         },
         tooltip: 'FCM 테스트',

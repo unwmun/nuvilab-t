@@ -37,10 +37,9 @@ class FCMService {
       FlutterLocalNotificationsPlugin();
 
   // 딥링크 핸들링을 위한 컨트롤러 (스트림)
-  final StreamController<Map<String, dynamic>> _deepLinkStreamController =
+  final _deepLinkController =
       StreamController<Map<String, dynamic>>.broadcast();
-  Stream<Map<String, dynamic>> get deepLinkStream =>
-      _deepLinkStreamController.stream;
+  Stream<Map<String, dynamic>> get deepLinkStream => _deepLinkController.stream;
 
   NotificationDetails? _platformChannelSpecifics;
 
@@ -200,13 +199,13 @@ class FCMService {
   // 메시지 탭 시 처리 (앱이 백그라운드에 있는 경우)
   void _handleMessageOpenedApp(RemoteMessage message) {
     debugPrint('알림 터치 (백그라운드): ${message.messageId}');
-    _processDeepLink(message.data);
+    processDeepLink(message.data);
   }
 
   // 앱이 종료된 상태에서 알림을 통해 시작된 경우 처리
   void _handleInitialMessage(RemoteMessage message) {
     debugPrint('초기 메시지 (앱이 종료된 상태): ${message.messageId}');
-    _processDeepLink(message.data);
+    processDeepLink(message.data);
   }
 
   // 로컬 알림 표시
@@ -246,17 +245,17 @@ class FCMService {
       debugPrint('로컬 알림 페이로드: $payload');
       try {
         final data = json.decode(payload) as Map<String, dynamic>;
-        _processDeepLink(data);
+        processDeepLink(data);
       } catch (e) {
         debugPrint('페이로드 파싱 오류: $e');
       }
     }
   }
 
-  // 딥링크 처리
-  void _processDeepLink(Map<String, dynamic> data) {
-    debugPrint('딥링크 처리: $data');
-    _deepLinkStreamController.add(data);
+  // 딥링크 데이터 처리
+  void processDeepLink(Map<String, dynamic> data) {
+    debugPrint('딥링크 데이터 처리: $data');
+    _deepLinkController.add(data);
   }
 
   // FCM 토큰 갱신
@@ -325,7 +324,7 @@ class FCMService {
 
   // 서비스 해제
   void dispose() {
-    _deepLinkStreamController.close();
+    _deepLinkController.close();
   }
 
   // 수동으로 알림 표시 (테스트용)

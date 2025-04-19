@@ -16,6 +16,7 @@ import 'package:nubilab/domain/repositories/air_quality_repository.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'dependency_injection.config.dart';
 import 'package:nubilab/core/services/theme_service.dart';
+import 'package:nubilab/core/services/deep_link_service.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -51,6 +52,13 @@ Future<void> configureDependencies() async {
   if (!getIt.isRegistered<RouteService>()) {
     getIt.registerSingleton<RouteService>(
       RouteService(getIt<FCMService>(), getIt<AirQualityApi>()),
+    );
+  }
+
+  // DeepLinkService 등록 (RouteService에 의존)
+  if (!getIt.isRegistered<DeepLinkService>()) {
+    getIt.registerSingleton<DeepLinkService>(
+      DeepLinkService(getIt<RouteService>()),
     );
   }
 
@@ -126,6 +134,11 @@ final fcmServiceProvider = Provider<FCMService>(
 // 라우트 서비스 프로바이더
 final routeServiceProvider = Provider<RouteService>(
   (ref) => getIt<RouteService>(),
+);
+
+// 딥링크 서비스 프로바이더
+final deepLinkServiceProvider = Provider<DeepLinkService>(
+  (ref) => getIt<DeepLinkService>(),
 );
 
 // 보안 관련 프로바이더

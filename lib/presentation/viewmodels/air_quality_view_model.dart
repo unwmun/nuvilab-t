@@ -198,4 +198,11 @@ class AirQualityViewModel extends StateNotifier<AirQualityState> {
     // API에서 데이터 가져오기
     await _fetchAirQuality();
   }
+
+  // 시도 이름만 업데이트하는 메서드 (데이터 로드 없음)
+  void updateSido(String sidoName) {
+    if (state.selectedSido != sidoName) {
+      state = state.copyWith(selectedSido: sidoName);
+    }
+  }
 }

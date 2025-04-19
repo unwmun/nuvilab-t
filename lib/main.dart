@@ -14,6 +14,7 @@ import 'package:nubilab/firebase_options.dart';
 import 'package:nubilab/presentation/pages/home/home_page.dart';
 import 'package:nubilab/presentation/viewmodels/theme_viewmodel.dart';
 import 'package:flutter/foundation.dart';
+import 'package:nubilab/core/services/deep_link_service.dart';
 
 void main() async {
   // Flutter 엔진 초기화 (반드시 가장 먼저 호출)
@@ -52,6 +53,15 @@ void main() async {
   } catch (e) {
     // FCM 초기화 실패해도 앱은 계속 실행되도록 함
     debugPrint('FCM 서비스 초기화 실패: $e');
+  }
+
+  try {
+    // 딥링크 서비스 초기화
+    await getIt<DeepLinkService>().init();
+    debugPrint('딥링크 서비스 초기화 성공');
+  } catch (e) {
+    // 딥링크 초기화 실패해도 앱은 계속 실행되도록 함
+    debugPrint('딥링크 서비스 초기화 실패: $e');
   }
 
   // 릴리스 빌드에서 디버그 모드 차단

@@ -1,16 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nubilab/core/di/dependency_injection.dart';
 import 'package:nubilab/core/services/fcm_service.dart';
 import 'package:nubilab/data/datasources/air_quality_api.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 import 'package:nubilab/presentation/pages/detail/detail_page.dart';
 import 'package:nubilab/presentation/pages/home/home_page.dart';
 import 'package:nubilab/presentation/pages/settings/settings_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nubilab/presentation/viewmodels/air_quality_view_model.dart';
+import 'package:flutter/foundation.dart';
 
 @singleton
 class RouteService {
   final FCMService _fcmService;
   final AirQualityApi _airQualityApi;
+  final ProviderContainer _providerContainer = ProviderContainer();
+
+  // 글로벌 EventBus 역할을 할 스트림 컨트롤러
+  final _sidoChangeController = StreamController<String>.broadcast();
+  Stream<String> get sidoChangeStream => _sidoChangeController.stream;
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -19,9 +30,16 @@ class RouteService {
     _fcmService.deepLinkStream.listen(_handleDeepLink);
   }
 
+  // 리소스 해제
+  void dispose() {
+    _providerContainer.dispose();
+    _sidoChangeController.close();
+  }
+
   // 딥링크 처리
   Future<void> _handleDeepLink(Map<String, dynamic> data) async {
     final screen = data['screen'] as String?;
+    debugPrint('딥링크 처리: $data (화면: $screen)');
 
     if (screen == null) return;
 
@@ -32,15 +50,24 @@ class RouteService {
       case 'settings':
         _navigateToSettings();
         break;
-      case 'detail':
-        final stationName = data['stationName'] as String?;
-        if (stationName != null) {
-          await _navigateToDetail(stationName);
+      case 'changeSido':
+        final sido = data['sido'] as String?;
+        debugPrint('시도 변경 시도: $sido');
+        if (sido != null) {
+          _changeSido(sido);
+        } else {
+          debugPrint('시도 변경 실패: sido 파라미터가 없습니다');
         }
         break;
       default:
         debugPrint('알 수 없는 화면 라우트: $screen');
     }
+  }
+
+  // 외부에서 딥링크 처리를 위한 공개 메서드
+  Future<void> handleDeepLink(Map<String, dynamic> data) async {
+    debugPrint('공개 딥링크 처리: $data');
+    await _handleDeepLink(data);
   }
 
   // 홈 화면으로 이동
@@ -57,36 +84,20 @@ class RouteService {
     );
   }
 
-  // 상세 화면으로 이동
-  Future<void> _navigateToDetail(String stationName) async {
-    // 선택적으로 API에서 측정소 데이터 가져오기
-    AirQualityItem? airQualityItem;
+  // 시도 변경 처리
+  void _changeSido(String sido) {
+    debugPrint('시도 변경 실행: $sido');
 
     try {
-      // 실제 앱에서는 여기서 API로 해당 측정소의 최신 정보를 가져올 수 있습니다.
-      // final response = await _airQualityApi.getAirQualityByStation(stationName);
-      // airQualityItem = response.response.body.items.first;
+      // 홈 화면으로 이동
+      _navigateToHome();
 
-      // 지금은 빈 데이터로 이동
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (context) => DetailPage(
-            stationName: stationName,
-            item: airQualityItem,
-          ),
-        ),
-      );
+      // 시도 변경 이벤트 발행
+      _sidoChangeController.add(sido);
+
+      debugPrint('시도 변경 이벤트 발행 완료: $sido');
     } catch (e) {
-      debugPrint('측정소 정보 가져오기 실패: $e');
-
-      // 오류가 발생해도 측정소 이름으로만 페이지 이동
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (context) => DetailPage(
-            stationName: stationName,
-          ),
-        ),
-      );
+      debugPrint('시도 변경 중 오류 발생: $e');
     }
   }
 
