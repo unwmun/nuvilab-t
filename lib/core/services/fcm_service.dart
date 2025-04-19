@@ -7,10 +7,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
-import 'package:flutter/material.dart';
-import 'package:nubilab/firebase_options.dart';
 
-import '../../presentation/pages/home/home_page.dart';
+import '../../firebase_options.dart';
 
 // iOS 시뮬레이터 여부 확인
 bool get _isIosSimulator {

@@ -1,19 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/network/ssl_pinning.dart';
-import 'package:nubilab/core/utils/logger.dart';
-import 'package:nubilab/data/models/air_quality.dart';
+import '../../core/network/ssl_pinning.dart';
+import '../../core/utils/logger.dart';
+import '../models/air_quality.dart';
 
 @injectable
 class AirQualityApi {
   final Dio _dio;
-  final String _baseUrl;
   final String _serviceKey;
 
   // SecureNetworkClient 클래스에서 관리하는 URL과 서비스 키를 사용
   AirQualityApi(@Named("secureClient") this._dio)
-      : _baseUrl = SecureNetworkClient.baseUrl,
-        _serviceKey = SecureNetworkClient.serviceKey;
+      : _serviceKey = SecureNetworkClient.serviceKey;
 
   Future<AirQualityResponse> getCtprvnRltmMesureDnsty({
     required String sidoName,
@@ -66,7 +64,7 @@ class AirQualityApi {
     }
 
     if (data is Map) {
-      AppLogger.debug('${indent}{');
+      AppLogger.debug('$indent{');
       data.forEach((key, value) {
         AppLogger.debug('$indent  $key: ${value.runtimeType}');
         if (value is Map || value is List) {
@@ -75,7 +73,7 @@ class AirQualityApi {
       });
       AppLogger.debug('$indent}');
     } else if (data is List) {
-      AppLogger.debug('${indent}[');
+      AppLogger.debug('$indent[');
       if (data.isNotEmpty) {
         AppLogger.debug('$indent  ${data.first.runtimeType}');
         if (data.first is Map || data.first is List) {

@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/data/models/air_quality.dart';
-import 'package:nubilab/domain/repositories/air_quality_repository.dart';
+import '../../data/models/air_quality.dart';
+import '../repositories/air_quality_repository.dart';
 
 @injectable
 class GetAirQualityUseCase {

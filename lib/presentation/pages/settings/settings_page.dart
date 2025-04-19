@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/constants/app_constants.dart';
-import 'package:nubilab/presentation/viewmodels/theme_viewmodel.dart';
-import 'package:nubilab/presentation/pages/settings/widgets/theme_selection_dialog.dart';
+import '../../../core/constants/app_constants.dart';
+import '../../viewmodels/theme_viewmodel.dart';
+import 'widgets/theme_selection_dialog.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -30,16 +30,16 @@ class SettingsPage extends ConsumerWidget {
 
           // 앱 정보 섹션
           const _SectionTitle(title: '앱 정보'),
-          ListTile(
-            title: const Text('버전'),
+          const ListTile(
+            title: Text('버전'),
             subtitle: Text(
                 '${AppConstants.appVersion} (${AppConstants.buildNumber})'),
-            trailing: const Icon(Icons.info_outline),
+            trailing: Icon(Icons.info_outline),
           ),
-          ListTile(
-            title: const Text('개발자'),
-            subtitle: const Text('개발자 이름'),
-            trailing: const Icon(Icons.person_outline),
+          const ListTile(
+            title: Text('개발자'),
+            subtitle: Text('개발자 이름'),
+            trailing: Icon(Icons.person_outline),
           ),
         ],
       ),

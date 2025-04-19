@@ -2,23 +2,24 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/network/network_info.dart';
-import 'package:nubilab/core/network/retry_interceptor.dart';
-import 'package:nubilab/core/security/debug_detector.dart';
-import 'package:nubilab/core/security/secure_storage.dart';
-import 'package:nubilab/core/network/ssl_pinning.dart';
-import 'package:nubilab/core/services/api_retry_service.dart';
-import 'package:nubilab/core/services/crashlytics_service.dart';
-import 'package:nubilab/core/services/fcm_service.dart';
-import 'package:nubilab/core/services/performance_service.dart';
-import 'package:nubilab/core/services/route_service.dart';
-import 'package:nubilab/data/datasources/air_quality_api.dart';
-import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
-import 'package:nubilab/domain/repositories/air_quality_repository.dart';
-import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
+
+import '../../data/datasources/air_quality_api.dart';
+import '../../data/datasources/air_quality_local_datasource.dart';
+import '../../domain/repositories/air_quality_repository.dart';
+import '../../domain/usecases/get_air_quality_usecase.dart';
+import '../network/network_info.dart';
+import '../network/retry_interceptor.dart';
+import '../network/ssl_pinning.dart';
+import '../security/debug_detector.dart';
+import '../security/secure_storage.dart';
+import '../services/api_retry_service.dart';
+import '../services/crashlytics_service.dart';
+import '../services/deep_link_service.dart';
+import '../services/fcm_service.dart';
+import '../services/performance_service.dart';
+import '../services/route_service.dart';
+import '../services/theme_service.dart';
 import 'dependency_injection.config.dart';
-import 'package:nubilab/core/services/theme_service.dart';
-import 'package:nubilab/core/services/deep_link_service.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -63,7 +64,7 @@ Future<void> configureDependencies() async {
   // RouteService 등록 (FCM 서비스와 AirQualityApi에 의존)
   if (!getIt.isRegistered<RouteService>()) {
     getIt.registerSingleton<RouteService>(
-      RouteService(getIt<FCMService>(), getIt<AirQualityApi>()),
+      RouteService(getIt<FCMService>()),
     );
   }
 

@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/di/dependency_injection.dart';
-import 'package:nubilab/core/services/performance_service.dart';
+
+import '../../core/di/dependency_injection.dart';
+import '../../core/services/performance_service.dart';
 
 /// 성능이 최적화된 리스트 위젯
 ///

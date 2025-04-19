@@ -12,7 +12,7 @@ class CrashlyticsService {
   /// Crashlytics 서비스 초기화
   Future<void> init() async {
     // 릴리즈 모드에서만 Crashlytics 활성화
-    final enableCollection = !kDebugMode;
+    const enableCollection = !kDebugMode;
 
     // Crashlytics 수집 활성화/비활성화 설정
     await _crashlytics.setCrashlyticsCollectionEnabled(enableCollection);

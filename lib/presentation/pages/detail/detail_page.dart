@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nubilab/data/models/air_quality.dart';
+import '../../../data/models/air_quality.dart';
 
 class DetailPage extends StatelessWidget {
   final String stationName;

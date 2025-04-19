@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/presentation/viewmodels/theme_viewmodel.dart';
+import '../../../viewmodels/theme_viewmodel.dart';
 
 class ThemeSelectionDialog extends ConsumerWidget {
   const ThemeSelectionDialog({super.key});
@@ -8,7 +8,7 @@ class ThemeSelectionDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentThemeMode = ref.watch(themeProvider);
-    final themeViewModel = ref.read(themeProvider.notifier);
+    ref.read(themeProvider.notifier);
 
     return AlertDialog(
       title: const Text('테마 설정'),

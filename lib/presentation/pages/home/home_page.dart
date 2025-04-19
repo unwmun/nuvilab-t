@@ -1,19 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/di/dependency_injection.dart';
-import 'package:nubilab/core/services/fcm_service.dart';
-import 'package:nubilab/presentation/pages/home/widgets/air_quality_list_view.dart';
-import 'package:nubilab/presentation/pages/home/widgets/empty_data_message.dart';
-import 'package:nubilab/presentation/pages/home/widgets/error_message.dart';
-import 'package:nubilab/presentation/pages/home/widgets/last_updated_info.dart';
-import 'package:nubilab/presentation/pages/home/widgets/loading_indicator.dart';
-import 'package:nubilab/presentation/pages/settings/settings_page.dart';
-import 'package:nubilab/presentation/viewmodels/air_quality_view_model.dart';
-import 'package:nubilab/presentation/widgets/sido_selector.dart';
-import 'package:flutter/foundation.dart';
-import 'package:nubilab/core/services/route_service.dart';
+
+import '../../../core/di/dependency_injection.dart';
+import '../../viewmodels/air_quality_view_model.dart';
+import '../../widgets/sido_selector.dart';
+import '../settings/settings_page.dart';
+import 'widgets/air_quality_list_view.dart';
+import 'widgets/empty_data_message.dart';
+import 'widgets/error_message.dart';
+import 'widgets/last_updated_info.dart';
+import 'widgets/loading_indicator.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});

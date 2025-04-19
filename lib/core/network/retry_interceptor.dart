@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/utils/logger.dart';
-import 'package:nubilab/core/services/api_retry_service.dart';
-import 'package:nubilab/data/models/api_retry_task.dart';
+
+import '../services/api_retry_service.dart';
+import '../utils/logger.dart';
 
 @singleton
 class RetryInterceptor extends Interceptor {

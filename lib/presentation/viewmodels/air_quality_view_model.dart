@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/constants/sido_list.dart';
-import 'package:nubilab/core/di/dependency_injection.dart' as di;
-import 'package:nubilab/core/network/network_info.dart';
-import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
-import 'package:nubilab/data/models/air_quality.dart';
-import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
+import '../../core/constants/sido_list.dart';
+import '../../core/di/dependency_injection.dart' as di;
+import '../../core/network/network_info.dart';
+import '../../core/utils/logger.dart';
+import '../../data/datasources/air_quality_local_datasource.dart';
+import '../../data/models/air_quality.dart';
+import '../../domain/usecases/get_air_quality_usecase.dart';
 
 class AirQualityState {
   final AsyncValue<AirQualityResponse> airQuality;
@@ -106,7 +107,7 @@ class AirQualityViewModel extends StateNotifier<AirQualityState> {
     await _loadLocalData();
 
     // API에서 최신 데이터 가져오기 (백그라운드에서 업데이트)
-    fetchAirQuality(state.selectedSido);
+    await fetchAirQuality(state.selectedSido);
   }
 
   // 로컬 데이터 로드
@@ -170,7 +171,7 @@ class AirQualityViewModel extends StateNotifier<AirQualityState> {
       if (state.airQuality.hasValue) {
         state = state.copyWith(isRefreshing: false);
         // 오류 로깅 등 추가 작업
-        print('백그라운드 갱신 오류: $error');
+        AppLogger.error('백그라운드 갱신 오류: $error');
       } else {
         // 표시할 데이터가 없으면 오류 상태로 변경
         state = state.copyWith(

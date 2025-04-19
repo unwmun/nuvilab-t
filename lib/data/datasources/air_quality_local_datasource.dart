@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/data/models/air_quality.dart';
-import 'package:nubilab/data/models/air_quality_hive_models.dart';
+import '../models/air_quality.dart';
+import '../models/air_quality_hive_models.dart';
 
 @injectable
 class AirQualityLocalDataSource {
@@ -100,7 +100,6 @@ class AirQualityLocalDataSource {
 
   // 캐시 유효성 확인
   Future<bool> isAirQualityDataCached(String sidoName) async {
-    final box = await Hive.openBox(_boxName);
     final metadataBox =
         await Hive.openBox<AirQualityCacheMetadata>(_metadataBoxName);
 

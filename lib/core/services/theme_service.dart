@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/constants/app_constants.dart';
+import '../constants/app_constants.dart';
 
 @lazySingleton
 class ThemeService {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/services/theme_service.dart';
-import 'package:nubilab/core/di/dependency_injection.dart';
+
+import '../../core/di/dependency_injection.dart';
+import '../../core/services/theme_service.dart';
 
 final themeProvider = StateNotifierProvider<ThemeViewModel, ThemeMode>((ref) {
   return ThemeViewModel(getIt<ThemeService>());

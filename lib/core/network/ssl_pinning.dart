@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
-import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/utils/logger.dart';
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
+
+import '../utils/logger.dart';
 
 /// SSL 핀닝을 지원하는 Dio 클라이언트 구성 클래스
 ///

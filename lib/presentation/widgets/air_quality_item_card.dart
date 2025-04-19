@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nubilab/data/models/air_quality.dart';
-import 'package:nubilab/presentation/pages/detail/detail_page.dart';
+import '../../data/models/air_quality.dart';
+import '../pages/detail/detail_page.dart';
 
 class AirQualityItemCard extends StatelessWidget {
   final AirQualityItem item;

@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/services/route_service.dart';
+import 'route_service.dart';
 
 /// URL 스킴을 통한 딥링크 처리를 담당하는 서비스
 ///

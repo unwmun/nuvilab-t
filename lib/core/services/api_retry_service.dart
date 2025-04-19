@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/network/network_info.dart';
-import 'package:nubilab/core/utils/logger.dart';
-import 'package:nubilab/data/models/api_retry_task.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../data/models/api_retry_task.dart';
+import '../network/network_info.dart';
+import '../utils/logger.dart';
 
 @singleton
 class ApiRetryService {
@@ -29,7 +30,7 @@ class ApiRetryService {
     Timer.periodic(_checkInterval, (timer) async {
       final isConnected = await _networkInfo.isConnected;
       if (isConnected && !_isProcessing) {
-        _processRetryQueue();
+        await _processRetryQueue();
       }
     });
   }
@@ -79,7 +80,7 @@ class ApiRetryService {
       final now = DateTime.now();
       final delay = earliestRetryTime.difference(now);
       if (delay.isNegative) {
-        _processRetryQueue();
+        await _processRetryQueue();
       } else {
         _retryTimer = Timer(delay, () {
           _processRetryQueue();
@@ -99,7 +100,6 @@ class ApiRetryService {
 
     try {
       final box = await Hive.openBox<ApiRetryTask>(_boxName);
-      final now = DateTime.now();
       final tasks = box.values.where((task) => task.canRetry).toList()
         ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
 

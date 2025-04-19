@@ -1,22 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/di/dependency_injection.dart';
-import 'package:nubilab/core/services/fcm_service.dart';
-import 'package:nubilab/data/datasources/air_quality_api.dart';
-import 'package:nubilab/data/models/air_quality.dart';
-import 'package:nubilab/presentation/pages/detail/detail_page.dart';
-import 'package:nubilab/presentation/pages/home/home_page.dart';
-import 'package:nubilab/presentation/pages/settings/settings_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/presentation/viewmodels/air_quality_view_model.dart';
-import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../data/models/air_quality.dart';
+import '../../presentation/pages/detail/detail_page.dart';
+import '../../presentation/pages/home/home_page.dart';
+import '../../presentation/pages/settings/settings_page.dart';
+import 'fcm_service.dart';
 
 @singleton
 class RouteService {
   final FCMService _fcmService;
-  final AirQualityApi _airQualityApi;
   final ProviderContainer _providerContainer = ProviderContainer();
 
   // 글로벌 EventBus 역할을 할 스트림 컨트롤러
@@ -25,7 +21,7 @@ class RouteService {
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  RouteService(this._fcmService, this._airQualityApi) {
+  RouteService(this._fcmService) {
     // 딥링크 리스너 설정
     _fcmService.deepLinkStream.listen(_handleDeepLink);
   }

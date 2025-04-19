@@ -1,9 +1,10 @@
 import 'package:injectable/injectable.dart';
-import 'package:nubilab/core/network/network_info.dart';
-import 'package:nubilab/data/datasources/air_quality_api.dart';
-import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
-import 'package:nubilab/data/models/air_quality.dart';
-import 'package:nubilab/domain/repositories/air_quality_repository.dart';
+
+import '../../core/network/network_info.dart';
+import '../../domain/repositories/air_quality_repository.dart';
+import '../datasources/air_quality_api.dart';
+import '../datasources/air_quality_local_datasource.dart';
+import '../models/air_quality.dart';
 
 @Injectable(as: AirQualityRepository)
 class AirQualityRepositoryImpl implements AirQualityRepository {

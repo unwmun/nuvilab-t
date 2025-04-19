@@ -1,4 +1,4 @@
-import 'package:nubilab/data/models/air_quality.dart';
+import '../../data/models/air_quality.dart';
 
 abstract class AirQualityRepository {
   Future<AirQualityResponse> getAirQualityBySido({

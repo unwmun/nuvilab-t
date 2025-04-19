@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/constants/sido_list.dart';
-import 'package:nubilab/presentation/viewmodels/air_quality_view_model.dart';
+import '../../core/constants/sido_list.dart';
+import '../viewmodels/air_quality_view_model.dart';
 
 class SidoSelector extends ConsumerWidget {
   const SidoSelector({super.key});
