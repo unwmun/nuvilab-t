@@ -19,45 +19,32 @@ import 'presentation/pages/home/home_page.dart';
 import 'presentation/viewmodels/theme_viewmodel.dart';
 
 void main() async {
-  // Flutter 엔진 초기화 (반드시 가장 먼저 호출)
   WidgetsFlutterBinding.ensureInitialized();
 
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-  };
-
   try {
-    // Firebase 초기화 (FCM 서비스보다 먼저 초기화해야 함)
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     debugPrint('Firebase 초기화 성공');
   } catch (e) {
-    // Firebase 초기화 실패해도 앱은 계속 실행되도록 함
     debugPrint('Firebase 초기화 실패: $e');
   }
 
-  // Hive 초기화
   await Hive.initFlutter();
 
-  // Hive 어댑터 등록
   Hive.registerAdapter(AirQualityCacheMetadataAdapter());
   Hive.registerAdapter(ApiRetryTaskAdapter());
   Hive.registerAdapter(ThemeModeAdapter());
 
-  // 의존성 주입 설정
   await configureDependencies();
 
   try {
-    // Crashlytics 초기화
     await getIt<CrashlyticsService>().init();
     debugPrint('Crashlytics 초기화 성공');
   } catch (e) {
-    // Crashlytics 초기화 실패해도 앱은 계속 실행되도록 함
     debugPrint('Crashlytics 초기화 실패: $e');
   }
 
-  // 디버그 모드에서 성능 모니터링 가이드 출력
   if (kDebugMode) {
     final performanceService = getIt<PerformanceService>();
     performanceService.printDevToolsUsageGuide();
@@ -65,24 +52,19 @@ void main() async {
   }
 
   try {
-    // FCM 서비스 초기화
     await getIt<FCMService>().init();
     debugPrint('FCM 서비스 초기화 성공');
   } catch (e) {
-    // FCM 초기화 실패해도 앱은 계속 실행되도록 함
     debugPrint('FCM 서비스 초기화 실패: $e');
   }
 
   try {
-    // 딥링크 서비스 초기화
     await getIt<DeepLinkService>().init();
     debugPrint('딥링크 서비스 초기화 성공');
   } catch (e) {
-    // 딥링크 초기화 실패해도 앱은 계속 실행되도록 함
     debugPrint('딥링크 서비스 초기화 실패: $e');
   }
 
-  // 릴리스 빌드에서 디버그 모드 차단
   if (const bool.fromEnvironment('dart.vm.product')) {
     final debugDetector = getIt<DebugDetector>();
     debugDetector.enforceReleaseOnlyMode();

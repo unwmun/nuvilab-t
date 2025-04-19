@@ -18,7 +18,6 @@ class SettingsPage extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          // 테마 설정 섹션
           const _SectionTitle(title: '화면 설정'),
           ListTile(
             title: const Text('테마 모드'),
@@ -27,8 +26,6 @@ class SettingsPage extends ConsumerWidget {
             onTap: () => _showThemeDialog(context, ref),
           ),
           const Divider(),
-
-          // 앱 정보 섹션
           const _SectionTitle(title: '앱 정보'),
           const ListTile(
             title: Text('버전'),

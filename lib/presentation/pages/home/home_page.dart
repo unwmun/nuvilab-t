@@ -31,7 +31,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _subscribeToDeeepLinks() {
-    // 시도 변경 이벤트 구독
     final routeService = ref.read(routeServiceProvider);
     routeService.sidoChangeStream.listen((sido) {
       debugPrint('HomePage에서 시도 변경 이벤트 수신: $sido');
@@ -45,11 +44,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     debugPrint('시도 변경 실행: $currentSido -> $sido');
 
-    // 시도 변경 및 데이터 로드
     viewModel.updateSido(sido);
     viewModel.fetchAirQuality(sido);
 
-    // 사용자에게 피드백
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('시도를 $sido(으)로 변경했습니다'),
@@ -129,14 +126,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           try {
-            // FCM 토큰 확인
             final fcmToken = await fcmService.getToken();
             debugPrint('FCM 토큰: $fcmToken');
 
-            // FCM 테스트 알림 표시
             await fcmService.showTestNotification();
 
-            // 테스트 알림이 발송되었음을 사용자에게 알림
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

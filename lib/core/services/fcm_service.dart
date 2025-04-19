@@ -252,23 +252,27 @@ class FCMService {
 
   // 딥링크 데이터 처리
   void processDeepLink(Map<String, dynamic> data) {
-    debugPrint('딥링크 데이터 처리: $data');
-    _deepLinkController.add(data);
+    try {
+      debugPrint('딥링크 데이터 처리: $data');
+      _deepLinkController.add(data);
+    } catch (e) {
+      debugPrint('딥링크 처리 오류: $e');
+    }
   }
 
   // FCM 토큰 갱신
   Future<String?> getToken() async {
+    if (_isIosSimulator) {
+      debugPrint('iOS 시뮬레이터에서는 실제 FCM 토큰을 얻을 수 없습니다. 가상 토큰을 반환합니다.');
+      return _simulatorToken;
+    }
+
     try {
-      // iOS 시뮬레이터는 FCM 토큰을 지원하지 않으므로 가상 토큰 반환
-      if (_isIosSimulator) {
-        return _simulatorToken;
-      }
-      return await _firebaseMessaging.getToken();
+      final token = await _firebaseMessaging.getToken();
+      debugPrint('FCM 토큰: $token');
+      return token;
     } catch (e) {
-      debugPrint('FCM 토큰 획득 오류: $e');
-      if (_isIosSimulator) {
-        return _simulatorToken;
-      }
+      debugPrint('FCM 토큰 가져오기 오류: $e');
       return null;
     }
   }
@@ -279,13 +283,15 @@ class FCMService {
 
     // iOS 시뮬레이터에서는 가상 APNS 토큰 제공
     if (_isIosSimulator) {
-      return 'simulator-apns-token';
+      return 'simulator-apns-token-${DateTime.now().millisecondsSinceEpoch}';
     }
 
     try {
-      return await _firebaseMessaging.getAPNSToken();
+      final token = await _firebaseMessaging.getAPNSToken();
+      debugPrint('APNS 토큰: $token');
+      return token;
     } catch (e) {
-      debugPrint('APNS 토큰 획득 오류: $e');
+      debugPrint('APNS 토큰 가져오기 오류: $e');
       return null;
     }
   }
@@ -300,6 +306,7 @@ class FCMService {
 
     try {
       await _firebaseMessaging.subscribeToTopic(topic);
+      debugPrint('토픽 구독 성공: $topic');
     } catch (e) {
       debugPrint('토픽 구독 오류: $e');
     }
@@ -315,6 +322,7 @@ class FCMService {
 
     try {
       await _firebaseMessaging.unsubscribeFromTopic(topic);
+      debugPrint('토픽 구독 해제 성공: $topic');
     } catch (e) {
       debugPrint('토픽 구독 해제 오류: $e');
     }
@@ -327,14 +335,13 @@ class FCMService {
 
   // 수동으로 알림 표시 (테스트용)
   Future<void> showTestNotification() async {
-    try {
-      await _showLocalNotification(
-        '테스트 알림',
-        '이것은 테스트 알림입니다',
-        {'screen': 'detail', 'id': '123'},
-      );
-    } catch (e) {
-      debugPrint('테스트 알림 전송 오류: $e');
-    }
+    await _showLocalNotification(
+      '테스트 알림',
+      '이것은 테스트 알림입니다.',
+      {
+        'screen': 'home',
+        'action': 'test',
+      },
+    );
   }
 }
