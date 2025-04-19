@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "144098574804",
+    "project_id": "nuvilab-d7261",
+    "storage_bucket": "nuvilab-d7261.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144098574804:android:40e7b6213a161e2f441641",
+        "android_client_info": {
+          "package_name": "com.example.nubilab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLV7HBvK6toZn1Ye4GDeOshCcveYfnvd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

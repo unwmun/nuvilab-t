@@ -8,6 +8,8 @@ import 'package:nubilab/core/security/debug_detector.dart';
 import 'package:nubilab/core/security/secure_storage.dart';
 import 'package:nubilab/core/network/ssl_pinning.dart';
 import 'package:nubilab/core/services/api_retry_service.dart';
+import 'package:nubilab/core/services/fcm_service.dart';
+import 'package:nubilab/core/services/route_service.dart';
 import 'package:nubilab/data/datasources/air_quality_api.dart';
 import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
 import 'package:nubilab/domain/repositories/air_quality_repository.dart';
@@ -34,10 +36,22 @@ Future<void> configureDependencies() async {
     getIt.registerSingleton<DebugDetector>(DebugDetector());
   }
 
+  // FCM 서비스 등록
+  if (!getIt.isRegistered<FCMService>()) {
+    getIt.registerSingleton<FCMService>(FCMService());
+  }
+
   // 보안 통신용 Dio 인스턴스 등록 (AirQualityApi에서 사용)
   if (!getIt.isRegistered<Dio>(instanceName: "secureClient")) {
     getIt.registerSingleton<Dio>(getIt<SecureNetworkClient>().client,
         instanceName: "secureClient");
+  }
+
+  // RouteService 등록 (FCM 서비스와 AirQualityApi에 의존)
+  if (!getIt.isRegistered<RouteService>()) {
+    getIt.registerSingleton<RouteService>(
+      RouteService(getIt<FCMService>(), getIt<AirQualityApi>()),
+    );
   }
 
   // 보안 확인 진행
@@ -102,6 +116,16 @@ final airQualityRepositoryProvider = Provider<AirQualityRepository>(
 
 final getAirQualityUseCaseProvider = Provider<GetAirQualityUseCase>(
   (ref) => getIt<GetAirQualityUseCase>(),
+);
+
+// FCM 서비스 프로바이더
+final fcmServiceProvider = Provider<FCMService>(
+  (ref) => getIt<FCMService>(),
+);
+
+// 라우트 서비스 프로바이더
+final routeServiceProvider = Provider<RouteService>(
+  (ref) => getIt<RouteService>(),
 );
 
 // 보안 관련 프로바이더
