@@ -8,7 +8,9 @@ import 'package:nubilab/core/security/debug_detector.dart';
 import 'package:nubilab/core/security/secure_storage.dart';
 import 'package:nubilab/core/network/ssl_pinning.dart';
 import 'package:nubilab/core/services/api_retry_service.dart';
+import 'package:nubilab/core/services/crashlytics_service.dart';
 import 'package:nubilab/core/services/fcm_service.dart';
+import 'package:nubilab/core/services/performance_service.dart';
 import 'package:nubilab/core/services/route_service.dart';
 import 'package:nubilab/data/datasources/air_quality_api.dart';
 import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
@@ -35,6 +37,16 @@ Future<void> configureDependencies() async {
   }
   if (!getIt.isRegistered<DebugDetector>()) {
     getIt.registerSingleton<DebugDetector>(DebugDetector());
+  }
+
+  // Crashlytics 서비스 등록
+  if (!getIt.isRegistered<CrashlyticsService>()) {
+    getIt.registerSingleton<CrashlyticsService>(CrashlyticsService());
+  }
+
+  // 성능 모니터링 서비스 등록
+  if (!getIt.isRegistered<PerformanceService>()) {
+    getIt.registerSingleton<PerformanceService>(PerformanceService());
   }
 
   // FCM 서비스 등록
@@ -124,6 +136,16 @@ final airQualityRepositoryProvider = Provider<AirQualityRepository>(
 
 final getAirQualityUseCaseProvider = Provider<GetAirQualityUseCase>(
   (ref) => getIt<GetAirQualityUseCase>(),
+);
+
+// Crashlytics 서비스 프로바이더
+final crashlyticsServiceProvider = Provider<CrashlyticsService>(
+  (ref) => getIt<CrashlyticsService>(),
+);
+
+// 성능 모니터링 서비스 프로바이더
+final performanceServiceProvider = Provider<PerformanceService>(
+  (ref) => getIt<PerformanceService>(),
 );
 
 // FCM 서비스 프로바이더

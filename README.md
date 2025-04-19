@@ -15,6 +15,9 @@
 - **네트워크**: Dio
 - **데이터 모델링**: Freezed, json_serializable
 - **의존성 주입**: get_it, injectable
+- **모니터링**: Firebase Crashlytics
+- **푸시 알림**: Firebase Cloud Messaging
+- **백그라운드 작업**: Workmanager
 
 ## 애플리케이션 구조
 
@@ -54,6 +57,77 @@ lib/
    ```
    flutter run
    ```
+
+## 성능 최적화 및 모니터링
+
+### Flutter DevTools 활용
+
+이 프로젝트는 성능 최적화 및 디버깅을 위해 Flutter DevTools를 적극 활용합니다.
+
+1. DevTools 실행하기
+
+   ```bash
+   flutter run -d chrome --web-renderer html
+   # 콘솔에 표시되는 DevTools URL 접속 (일반적으로 http://127.0.0.1:9100/)
+   ```
+
+2. 성능 모니터링
+
+   - **Performance 탭**: UI 렌더링 병목 현상 파악
+   - **Memory 탭**: 메모리 누수 및 과도한 객체 할당 확인
+   - **Network 탭**: API 호출 지연 및 응답 시간 파악
+
+3. 최적화 유틸리티 사용
+
+   ```dart
+   // 위젯 빌드 성능 측정
+   final performanceService = getIt<PerformanceService>();
+   performanceService.trackBuildPerformance('MyWidgetName', myWidget);
+
+   // 특정 작업 실행 시간 측정
+   await performanceService.measureExecutionTime('데이터 로딩', () async {
+     await repository.fetchData();
+   });
+   ```
+
+4. 최적화된 위젯 사용
+   ```dart
+   OptimizedList<String>(
+     items: myItems,
+     itemBuilder: (context, item, index) => MyListItem(item: item),
+   );
+   ```
+
+### Firebase Crashlytics
+
+이 프로젝트는 Firebase Crashlytics를 통해 앱 크래시 및 오류를 모니터링합니다.
+
+1. 사용자 정보 설정
+
+   ```dart
+   final crashlytics = getIt<CrashlyticsService>();
+   crashlytics.setUserIdentifier('user-123');
+   ```
+
+2. 커스텀 에러 기록
+
+   ```dart
+   try {
+     // 잠재적 오류 발생 코드
+   } catch (e, stack) {
+     crashlytics.recordError(e, stack);
+   }
+   ```
+
+3. 이벤트 로깅
+
+   ```dart
+   crashlytics.log('사용자가 결제 프로세스 시작');
+   crashlytics.setCustomKey('payment_method', 'credit_card');
+   ```
+
+4. Firebase 콘솔 확인
+   - https://console.firebase.google.com 에서 프로젝트 선택 후 Crashlytics 섹션 확인
 
 ## 사용된 공공 API
 

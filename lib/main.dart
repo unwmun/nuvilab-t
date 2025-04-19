@@ -5,7 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:nubilab/core/constants/app_constants.dart';
 import 'package:nubilab/core/di/dependency_injection.dart';
 import 'package:nubilab/core/security/debug_detector.dart';
+import 'package:nubilab/core/services/crashlytics_service.dart';
 import 'package:nubilab/core/services/fcm_service.dart';
+import 'package:nubilab/core/services/performance_service.dart';
 import 'package:nubilab/core/services/route_service.dart';
 import 'package:nubilab/data/models/air_quality_hive_models.dart';
 import 'package:nubilab/data/models/api_retry_task.dart';
@@ -45,6 +47,22 @@ void main() async {
 
   // 의존성 주입 설정
   await configureDependencies();
+
+  try {
+    // Crashlytics 초기화
+    await getIt<CrashlyticsService>().init();
+    debugPrint('Crashlytics 초기화 성공');
+  } catch (e) {
+    // Crashlytics 초기화 실패해도 앱은 계속 실행되도록 함
+    debugPrint('Crashlytics 초기화 실패: $e');
+  }
+
+  // 디버그 모드에서 성능 모니터링 가이드 출력
+  if (kDebugMode) {
+    final performanceService = getIt<PerformanceService>();
+    performanceService.printDevToolsUsageGuide();
+    performanceService.printPerformanceGuidelines();
+  }
 
   try {
     // FCM 서비스 초기화
