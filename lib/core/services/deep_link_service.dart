@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nubilab/core/services/route_service.dart';
-import 'package:uni_links/uni_links.dart';
 
 /// URL 스킴을 통한 딥링크 처리를 담당하는 서비스
 ///
@@ -18,6 +18,7 @@ import 'package:uni_links/uni_links.dart';
 @singleton
 class DeepLinkService {
   final RouteService _routeService;
+  final _appLinks = AppLinks();
   StreamSubscription? _linkSubscription;
   bool _isInitialized = false;
 
@@ -28,14 +29,15 @@ class DeepLinkService {
 
     try {
       // 앱이 완전히 종료된 상태에서 딥링크로 실행된 경우 처리
-      final initialLink = await getInitialLink();
+      final initialLink = await _appLinks.getInitialAppLink();
       if (initialLink != null) {
         debugPrint('초기 딥링크: $initialLink');
         _handleLink(initialLink);
       }
 
       // 앱이 백그라운드에 있는 상태에서 딥링크로 호출된 경우 처리
-      _linkSubscription = linkStream.listen(_handleLink, onError: (e) {
+      _linkSubscription =
+          _appLinks.uriLinkStream.listen(_handleLink, onError: (e) {
         debugPrint('딥링크 에러: $e');
       });
 
@@ -49,12 +51,10 @@ class DeepLinkService {
     _linkSubscription?.cancel();
   }
 
-  void _handleLink(String? link) {
-    if (link == null) return;
+  void _handleLink(Uri? uri) {
+    if (uri == null) return;
 
     try {
-      final uri = Uri.parse(link);
-
       // 스킴 확인 (nlab://)
       if (uri.scheme.toLowerCase() != 'nlab') {
         debugPrint('지원하지 않는 스킴: ${uri.scheme}');
@@ -71,7 +71,7 @@ class DeepLinkService {
         // 첫 번째 슬래시(/) 제거
         screen = uri.path.startsWith('/') ? uri.path.substring(1) : uri.path;
       } else {
-        debugPrint('잘못된 딥링크 형식: $link');
+        debugPrint('잘못된 딥링크 형식: $uri');
         return;
       }
 
