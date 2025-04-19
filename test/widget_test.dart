@@ -6,13 +6,13 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
+import 'package:nubilab/core/services/fcm_service.dart';
 import 'package:nubilab/core/services/route_service.dart';
 import 'package:nubilab/core/services/theme_service.dart';
-import 'package:nubilab/core/services/fcm_service.dart';
 
 // ThemeService를 목업하기 위한 클래스
 class MockThemeService extends Mock implements ThemeService {
@@ -45,12 +45,12 @@ class MockFCMService extends Mock implements FCMService {}
 
 // 테스트용 간소화된 앱
 class TestApp extends StatelessWidget {
-  const TestApp({Key? key}) : super(key: key);
+  const TestApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const Scaffold(body: Center(child: Text('테스트 앱'))),
+    return const MaterialApp(
+      home: Scaffold(body: Center(child: Text('테스트 앱'))),
     );
   }
 }
