@@ -137,3 +137,43 @@ lib/
 ## 라이센스
 
 이 프로젝트는 MIT 라이센스로 배포됩니다.
+
+## 테스트 실행하기
+
+### 단위 테스트
+
+```bash
+flutter test
+```
+
+### 통합 테스트
+
+통합 테스트는 실제 앱 환경에서 UI와 기능을 테스트합니다.
+
+#### 모의 API 테스트 (권장)
+
+실제 API 호출 없이 모의 데이터로 테스트합니다:
+
+```bash
+flutter test integration_test/app_mock_test.dart
+```
+
+#### 실제 API 테스트 (선택사항)
+
+실제 API와 통신하면서 테스트합니다:
+
+```bash
+flutter test integration_test/app_test.dart
+```
+
+> **참고**: 실제 API 테스트는 인터넷 연결과 API 서버 상태에 따라 결과가 달라질 수 있습니다.
+
+### 스크립트를 통한 모든 테스트 실행
+
+```bash
+# 실행 권한 부여
+chmod +x integration_test/run_test.sh
+
+# 테스트 실행
+./integration_test/run_test.sh
+```
