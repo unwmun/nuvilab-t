@@ -34,10 +34,6 @@ final airQualityViewModelProvider =
     StateNotifierProvider<AirQualityViewModel, AirQualityState>((ref) =>
         AirQualityViewModel(ref.watch(di.getAirQualityUseCaseProvider)));
 
-// 저장소 프로바이더는 실제 의존성 주입 설정에서 제공되어야 합니다.
-final airQualityRepositoryProvider =
-    Provider((ref) => throw UnimplementedError());
-
 class AirQualityViewModel extends StateNotifier<AirQualityState> {
   final GetAirQualityUseCase _getAirQualityUseCase;
   Timer? _updateTimer;
