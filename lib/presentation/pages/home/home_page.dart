@@ -22,9 +22,23 @@ class HomePage extends ConsumerWidget {
         title: const Text('대기질 정보'),
         actions: [
           const SidoSelector(),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => viewModel.fetchAirQuality(selectedSido),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () => viewModel.fetchAirQuality(selectedSido),
+              ),
+              if (airQualityState.isRefreshing)
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                  ),
+                ),
+            ],
           ),
         ],
       ),

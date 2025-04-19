@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nubilab/core/network/network_info.dart';
 import 'package:nubilab/data/datasources/air_quality_api.dart';
+import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
 import 'package:nubilab/domain/repositories/air_quality_repository.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'dependency_injection.config.dart';
@@ -39,6 +41,12 @@ final dioProvider = Provider<Dio>((ref) => getIt<Dio>());
 
 final airQualityApiProvider =
     Provider<AirQualityApi>((ref) => getIt<AirQualityApi>());
+
+final airQualityLocalDataSourceProvider = Provider<AirQualityLocalDataSource>(
+    (ref) => getIt<AirQualityLocalDataSource>());
+
+final networkInfoProvider =
+    Provider<NetworkInfo>((ref) => getIt<NetworkInfo>());
 
 final airQualityRepositoryProvider = Provider<AirQualityRepository>(
   (ref) => getIt<AirQualityRepository>(),
