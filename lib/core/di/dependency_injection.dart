@@ -10,16 +10,22 @@ import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
 import 'package:nubilab/domain/repositories/air_quality_repository.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'dependency_injection.config.dart';
+import 'package:nubilab/core/services/theme_service.dart';
 
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 @InjectableInit(
-  initializerName: 'init', // $initGetIt 대신 사용할 이름
+  initializerName: 'init', // getIt.init() 대신 getIt.$init()을 사용하기 위한 이름 변경
   preferRelativeImports: true,
   asExtension: false,
 )
 Future<void> configureDependencies() async {
+  // config.dart 파일에 생성된 init 함수 호출
   init(getIt);
+
+  // ThemeService 초기화
+  final themeService = getIt<ThemeService>();
+  await themeService.init();
 }
 
 @module

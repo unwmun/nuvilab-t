@@ -153,6 +153,11 @@ lib/
 - 이슈 해결 시 `fix:`와 함께 해결된 문제를 명확히 명시하세요.
 - 커밋 메시지는 영어 또는 한글 중 일관되게 사용하세요.
 
+### 🧩 의존성 주입 (get_it)
+
+- 서비스, 리포지토리, ViewModel 등 주입이 필요한 객체는 `get_it`을 통해 등록하고 사용합니다.
+- 신규 기능(예: 새로운 ViewModel, UseCase 등) 추가 시, 해당 객체를 `get_it`에 등록하는 것을 **절대 누락하지 않도록 주의**합니다.
+
 ## Lint Recommendations
 - null safety, 분석기 설정 활용
 - ViewModel은 최대한 UI 로직에 집중하고, 데이터 가공은 UseCase에서 처리

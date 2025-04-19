@@ -20,6 +20,7 @@ import '../../domain/usecases/get_air_quality_usecase.dart' as _i460;
 import '../network/network_info.dart' as _i932;
 import '../network/retry_interceptor.dart' as _i10;
 import '../services/api_retry_service.dart' as _i132;
+import '../services/theme_service.dart' as _i982;
 import 'dependency_injection.dart' as _i9;
 
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -37,6 +38,7 @@ _i174.GetIt init(
   gh.factory<_i493.AirQualityLocalDataSource>(
       () => _i493.AirQualityLocalDataSource());
   gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
+  gh.lazySingleton<_i982.ThemeService>(() => _i982.ThemeService());
   gh.factory<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl());
   gh.factory<_i845.AirQualityApi>(() => _i845.AirQualityApi(gh<_i361.Dio>()));
   gh.factory<_i1051.AirQualityRepository>(() => _i779.AirQualityRepositoryImpl(
