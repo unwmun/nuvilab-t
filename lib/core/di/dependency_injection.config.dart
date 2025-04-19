@@ -24,6 +24,11 @@ import '../network/ssl_pinning.dart' as _i758;
 import '../security/debug_detector.dart' as _i853;
 import '../security/secure_storage.dart' as _i989;
 import '../services/api_retry_service.dart' as _i132;
+import '../services/crashlytics_service.dart' as _i352;
+import '../services/deep_link_service.dart' as _i391;
+import '../services/fcm_service.dart' as _i928;
+import '../services/performance_service.dart' as _i910;
+import '../services/route_service.dart' as _i750;
 import '../services/theme_service.dart' as _i982;
 import 'dependency_injection.dart' as _i9;
 
@@ -42,8 +47,11 @@ _i174.GetIt init(
   gh.factory<_i493.AirQualityLocalDataSource>(
       () => _i493.AirQualityLocalDataSource());
   gh.singleton<_i989.SecureStorage>(() => _i989.SecureStorage());
-  gh.singleton<_i758.SecureNetworkClient>(() => _i758.SecureNetworkClient());
   gh.singleton<_i853.DebugDetector>(() => _i853.DebugDetector());
+  gh.singleton<_i758.SecureNetworkClient>(() => _i758.SecureNetworkClient());
+  gh.singleton<_i352.CrashlyticsService>(() => _i352.CrashlyticsService());
+  gh.singleton<_i928.FCMService>(() => _i928.FCMService());
+  gh.singleton<_i910.PerformanceService>(() => _i910.PerformanceService());
   gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
   gh.lazySingleton<_i982.ThemeService>(() => _i982.ThemeService());
   gh.factory<_i279.AuthViewModel>(
@@ -51,6 +59,8 @@ _i174.GetIt init(
   gh.factory<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl());
   gh.factory<_i845.AirQualityApi>(
       () => _i845.AirQualityApi(gh<_i361.Dio>(instanceName: 'secureClient')));
+  gh.singleton<_i750.RouteService>(
+      () => _i750.RouteService(gh<_i928.FCMService>()));
   gh.singleton<_i132.ApiRetryService>(
       () => _i132.ApiRetryService(gh<_i932.NetworkInfo>()));
   gh.factory<_i1051.AirQualityRepository>(() => _i779.AirQualityRepositoryImpl(
@@ -60,6 +70,8 @@ _i174.GetIt init(
       ));
   gh.singleton<_i10.RetryInterceptor>(
       () => _i10.RetryInterceptor(gh<_i132.ApiRetryService>()));
+  gh.singleton<_i391.DeepLinkService>(
+      () => _i391.DeepLinkService(gh<_i750.RouteService>()));
   gh.factory<_i460.GetAirQualityUseCase>(
       () => _i460.GetAirQualityUseCase(gh<_i1051.AirQualityRepository>()));
   return getIt;

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:meta/meta.dart';
 import '../../core/network/ssl_pinning.dart';
 import '../../core/utils/logger.dart';
 import '../models/air_quality.dart';
@@ -12,6 +13,15 @@ class AirQualityApi {
   // SecureNetworkClient 클래스에서 관리하는 URL과 서비스 키를 사용
   AirQualityApi(@Named("secureClient") this._dio)
       : _serviceKey = SecureNetworkClient.serviceKey;
+
+  // 테스트를 위한 생성자 메서드
+  @visibleForTesting
+  factory AirQualityApi.withCustomDio(Dio dio, String serviceKey) {
+    return AirQualityApi._test(dio, serviceKey);
+  }
+
+  // 테스트 전용 생성자
+  AirQualityApi._test(this._dio, this._serviceKey);
 
   Future<AirQualityResponse> getCtprvnRltmMesureDnsty({
     required String sidoName,

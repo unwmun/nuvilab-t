@@ -131,11 +131,12 @@ class AirQualityViewModel extends StateNotifier<AirQualityState> {
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
-      // 네트워크 연결이 없는 경우 로컬 데이터 로드
-      await _loadLocalData();
+      // 네트워크 연결이 없는 경우 로컬 데이터 확인
+      final localData =
+          await _localDataSource.getAirQualityData(state.selectedSido);
 
-      // 로컬 데이터가 없으면 오류 표시
-      if (!state.airQuality.hasValue) {
+      // 로컬 데이터가 없으면 오류 상태로 설정
+      if (localData == null) {
         state = state.copyWith(
           airQuality: AsyncValue.error(
             '네트워크 연결이 없으며 저장된 데이터가 없습니다.',
@@ -143,8 +144,16 @@ class AirQualityViewModel extends StateNotifier<AirQualityState> {
           ),
           isRefreshing: false,
         );
+        return;
+      } else {
+        // 로컬 데이터가 있으면 사용
+        state = state.copyWith(
+          airQuality: AsyncValue.data(localData),
+          lastUpdated: DateTime.now(),
+          isRefreshing: false,
+        );
+        return;
       }
-      return;
     }
 
     try {
@@ -157,8 +166,8 @@ class AirQualityViewModel extends StateNotifier<AirQualityState> {
       }
 
       // API에서 데이터 가져오기
-      final result =
-          await _getAirQualityUseCase.execute(sidoName: state.selectedSido);
+      final result = await _getAirQualityUseCase.execute(
+          sidoName: state.selectedSido, pageNo: 1, numOfRows: 100);
 
       // 상태 업데이트
       state = state.copyWith(
