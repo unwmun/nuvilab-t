@@ -1,16 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nubilab/core/network/ssl_pinning.dart';
 import 'package:nubilab/core/utils/logger.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 
 @injectable
 class AirQualityApi {
   final Dio _dio;
-  final String _baseUrl = 'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc';
-  final String _serviceKey =
-      'lW7UGCa8yfdQ7GoEA/SDI4WIb4h8h4XtADxpWDeLTRsTGlYNSzM89LvxppvVBDsieGkKb0rwWhSSOXVXCr/nyg==';
+  final String _baseUrl;
+  final String _serviceKey;
 
-  AirQualityApi(this._dio);
+  // SecureNetworkClient 클래스에서 관리하는 URL과 서비스 키를 사용
+  AirQualityApi(@Named("secureClient") this._dio)
+      : _baseUrl = SecureNetworkClient.baseUrl,
+        _serviceKey = SecureNetworkClient.serviceKey;
 
   Future<AirQualityResponse> getCtprvnRltmMesureDnsty({
     required String sidoName,
@@ -20,8 +23,9 @@ class AirQualityApi {
     String ver = '1.0',
   }) async {
     try {
+      // SSL 보안 통신을 활용한 API 호출
       final response = await _dio.get(
-        '$_baseUrl/getCtprvnRltmMesureDnsty',
+        '/getCtprvnRltmMesureDnsty', // 기본 URL은 이미 SecureNetworkClient에 설정되어 있음
         queryParameters: {
           'sidoName': sidoName,
           'pageNo': pageNo,

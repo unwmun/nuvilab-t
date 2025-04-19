@@ -4,6 +4,9 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nubilab/core/network/network_info.dart';
 import 'package:nubilab/core/network/retry_interceptor.dart';
+import 'package:nubilab/core/security/debug_detector.dart';
+import 'package:nubilab/core/security/secure_storage.dart';
+import 'package:nubilab/core/network/ssl_pinning.dart';
 import 'package:nubilab/core/services/api_retry_service.dart';
 import 'package:nubilab/data/datasources/air_quality_api.dart';
 import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
@@ -23,6 +26,24 @@ Future<void> configureDependencies() async {
   // config.dart 파일에 생성된 init 함수 호출
   init(getIt);
 
+  // 보안 클래스 등록 - SecureStorage는 이미 등록되어 있으므로 다시 등록하지 않음
+  if (!getIt.isRegistered<SecureNetworkClient>()) {
+    getIt.registerSingleton<SecureNetworkClient>(SecureNetworkClient());
+  }
+  if (!getIt.isRegistered<DebugDetector>()) {
+    getIt.registerSingleton<DebugDetector>(DebugDetector());
+  }
+
+  // 보안 통신용 Dio 인스턴스 등록 (AirQualityApi에서 사용)
+  if (!getIt.isRegistered<Dio>(instanceName: "secureClient")) {
+    getIt.registerSingleton<Dio>(getIt<SecureNetworkClient>().client,
+        instanceName: "secureClient");
+  }
+
+  // 보안 확인 진행
+  final debugDetector = getIt<DebugDetector>();
+  debugDetector.enforceReleaseOnlyMode();
+
   // ThemeService 초기화
   final themeService = getIt<ThemeService>();
   await themeService.init();
@@ -32,6 +53,12 @@ Future<void> configureDependencies() async {
 abstract class RegisterModule {
   @lazySingleton
   Dio get dio {
+    // 보안 설정이 적용된 Dio 클라이언트 사용 (프로덕션 환경)
+    if (const bool.fromEnvironment('dart.vm.product')) {
+      return getIt<SecureNetworkClient>().client;
+    }
+
+    // 개발 환경용 Dio 설정
     final dio = Dio(BaseOptions(
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 15),
@@ -75,4 +102,17 @@ final airQualityRepositoryProvider = Provider<AirQualityRepository>(
 
 final getAirQualityUseCaseProvider = Provider<GetAirQualityUseCase>(
   (ref) => getIt<GetAirQualityUseCase>(),
+);
+
+// 보안 관련 프로바이더
+final secureStorageProvider = Provider<SecureStorage>(
+  (ref) => getIt<SecureStorage>(),
+);
+
+final debugDetectorProvider = Provider<DebugDetector>(
+  (ref) => getIt<DebugDetector>(),
+);
+
+final secureNetworkClientProvider = Provider<SecureNetworkClient>(
+  (ref) => getIt<SecureNetworkClient>(),
 );

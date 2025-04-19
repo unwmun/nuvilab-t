@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nubilab/core/constants/app_constants.dart';
 import 'package:nubilab/core/di/dependency_injection.dart';
+import 'package:nubilab/core/security/debug_detector.dart';
 import 'package:nubilab/data/models/air_quality_hive_models.dart';
 import 'package:nubilab/data/models/api_retry_task.dart';
 import 'package:nubilab/data/models/theme_mode_hive_adapter.dart';
@@ -26,6 +27,12 @@ void main() async {
 
   // 의존성 주입 설정
   await configureDependencies();
+
+  // 릴리스 빌드에서 디버그 모드 차단
+  if (const bool.fromEnvironment('dart.vm.product')) {
+    final debugDetector = getIt<DebugDetector>();
+    debugDetector.enforceReleaseOnlyMode();
+  }
 
   runApp(
     const ProviderScope(
