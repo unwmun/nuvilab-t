@@ -27,11 +27,11 @@ void main() {
     );
   });
 
-  final testSido = '서울';
-  final testPageNo = 1;
-  final testNumOfRows = 100;
+  const testSido = '서울';
+  const testPageNo = 1;
+  const testNumOfRows = 100;
 
-  final testAirQualityResponse = AirQualityResponse(
+  const testAirQualityResponse = AirQualityResponse(
     response: Response(
       body: Body(
         totalCount: 1,

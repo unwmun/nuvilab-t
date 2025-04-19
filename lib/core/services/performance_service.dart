@@ -78,37 +78,4 @@ class PerformanceService {
       debugPrint('⏱️ $name 실행 시간: ${stopwatch.elapsedMilliseconds}ms');
     }
   }
-
-  /// 앱 성능 개선을 위한 가이드라인 출력
-  void printPerformanceGuidelines() {
-    if (!kDebugMode) return;
-
-    debugPrint('''
-======== 성능 최적화 체크리스트 ========
-1. 불필요한 빌드 방지: const 생성자 사용, setState 최소화
-2. 이미지 최적화: 적절한 크기로 리사이징, 캐싱 활용
-3. 무거운 연산은 백그라운드에서 처리: compute() 함수 활용
-4. 애니메이션 최적화: RepaintBoundary 사용
-5. 리스트 최적화: ListView.builder 사용
-6. 메모리 누수 방지: Stream/Controller 해제 확인
-7. 코드 스플리팅: 필요한 기능만 로딩
-8. 네트워크 요청 최적화: 캐싱, 요청 병합
-========================================
-''');
-  }
-
-  /// DevTools 사용 가이드 출력
-  void printDevToolsUsageGuide() {
-    if (!kDebugMode) return;
-
-    debugPrint('''
-======== DevTools 활용 가이드 ========
-1. Performance 탭: 프레임 드롭, UI 렌더링 성능 확인
-2. Memory 탭: 메모리 누수, 객체 할당 확인
-3. CPU Profiler: 병목 현상 찾기
-4. Network 탭: API 요청 지연 확인
-5. Logging: 디버그 메시지 및 예외 확인
-====================================
-''');
-  }
 }

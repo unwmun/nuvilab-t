@@ -11,8 +11,8 @@ import '../utils/logger.dart';
 @singleton
 class ApiRetryService {
   static const String _boxName = 'api_retry_tasks';
-  static const int _maxRetryCount = 5; // 최대 재시도 횟수
-  static const Duration _checkInterval = Duration(seconds: 10); // 재시도 큐 확인 간격
+  static const int _maxRetryCount = 5;
+  static const Duration _checkInterval = Duration(seconds: 10);
 
   final NetworkInfo _networkInfo;
   final _retryController = StreamController<ApiRetryTask>.broadcast();
@@ -26,7 +26,6 @@ class ApiRetryService {
   Stream<ApiRetryTask> get retryStream => _retryController.stream;
 
   Future<void> _initializeService() async {
-    // 주기적으로 재시도 큐 확인
     Timer.periodic(_checkInterval, (timer) async {
       final isConnected = await _networkInfo.isConnected;
       if (isConnected && !_isProcessing) {
@@ -35,7 +34,6 @@ class ApiRetryService {
     });
   }
 
-  // 실패한 API 호출을 큐에 추가
   Future<void> addRetryTask({
     required String endpoint,
     required Map<String, dynamic> parameters,
@@ -49,21 +47,19 @@ class ApiRetryService {
       parameters: parameters,
       createdAt: DateTime.now(),
       taskType: taskType,
-      nextRetryTime: DateTime.now(), // 첫 시도는 즉시 가능
+      nextRetryTime: DateTime.now(),
     );
 
     await box.put(task.id, task);
     _scheduleNextRetry();
   }
 
-  // 다음 재시도 시간에 맞춰 스케줄링
   void _scheduleNextRetry() async {
     final box = await Hive.openBox<ApiRetryTask>(_boxName);
     final tasks = box.values.toList();
 
     if (tasks.isEmpty) return;
 
-    // 가장 빠른 다음 재시도 시간 찾기
     DateTime? earliestRetryTime;
     for (final task in tasks) {
       if (task.nextRetryTime != null) {
@@ -89,7 +85,6 @@ class ApiRetryService {
     }
   }
 
-  // 재시도 큐 처리
   Future<void> _processRetryQueue() async {
     if (_isProcessing) return;
 
@@ -105,53 +100,44 @@ class ApiRetryService {
 
       for (final task in tasks) {
         if (task.retryCount >= _maxRetryCount) {
-          // 최대 재시도 횟수 초과
           AppLogger.warning('작업 ${task.id} 최대 재시도 횟수 초과로 삭제');
           await box.delete(task.id);
           continue;
         }
 
-        // 재시도 작업 스트림으로 전송
         _retryController.add(task);
 
-        // 재시도 횟수 증가 및 다음 재시도 시간 계산
         final updatedTask = task.copyWith(
           retryCount: task.retryCount + 1,
           nextRetryTime: task.calculateNextRetryTime(),
         );
         await box.put(task.id, updatedTask);
 
-        // 작업 간 짧은 지연 추가
         await Future.delayed(const Duration(milliseconds: 100));
       }
 
-      // 다음 재시도 스케줄링
       _scheduleNextRetry();
     } finally {
       _isProcessing = false;
     }
   }
 
-  // 작업 완료 처리
   Future<void> completeTask(String taskId) async {
     final box = await Hive.openBox<ApiRetryTask>(_boxName);
     await box.delete(taskId);
-    _scheduleNextRetry(); // 남은 작업 재스케줄링
+    _scheduleNextRetry();
   }
 
-  // 서비스 정리
   Future<void> dispose() async {
     _retryTimer?.cancel();
     await _retryController.close();
   }
 
-  // 현재 대기 중인 재시도 작업 수 조회
   Future<int> getPendingTaskCount() async {
     final box = await Hive.openBox<ApiRetryTask>(_boxName);
     return box.length;
   }
 
-  // 특정 작업의 재시도 상태 조회
   Future<ApiRetryTask?> getTaskStatus(String taskId) async {
     final box = await Hive.openBox<ApiRetryTask>(_boxName);
     return box.get(taskId);

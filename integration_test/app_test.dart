@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:nubilab/main.dart' as app;
 import 'package:nubilab/core/constants/sido_list.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nubilab/main.dart' as app;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

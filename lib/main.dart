@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -10,7 +9,6 @@ import 'core/security/debug_detector.dart';
 import 'core/services/crashlytics_service.dart';
 import 'core/services/deep_link_service.dart';
 import 'core/services/fcm_service.dart';
-import 'core/services/performance_service.dart';
 import 'data/models/air_quality_hive_models.dart';
 import 'data/models/api_retry_task.dart';
 import 'data/models/theme_mode_hive_adapter.dart';
@@ -43,12 +41,6 @@ void main() async {
     debugPrint('Crashlytics 초기화 성공');
   } catch (e) {
     debugPrint('Crashlytics 초기화 실패: $e');
-  }
-
-  if (kDebugMode) {
-    final performanceService = getIt<PerformanceService>();
-    performanceService.printDevToolsUsageGuide();
-    performanceService.printPerformanceGuidelines();
   }
 
   try {

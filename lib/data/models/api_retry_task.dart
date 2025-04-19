@@ -55,23 +55,17 @@ class ApiRetryTask {
     );
   }
 
-  // 다음 재시도 시간 계산 (지수 백오프)
   DateTime calculateNextRetryTime() {
-    // 기본 지연 시간 (초)
     const baseDelay = 5;
-    // 지터(무작위성) 범위 (초)
     const jitterRange = 3;
 
-    // 지수 백오프 계산: baseDelay * (2^retryCount)
     final delay = baseDelay * (1 << retryCount);
 
-    // 지터 추가 (-jitterRange/2 ~ +jitterRange/2)
     final jitter = (DateTime.now().millisecondsSinceEpoch % jitterRange) -
         (jitterRange ~/ 2);
 
     return DateTime.now().add(Duration(seconds: delay + jitter));
   }
 
-  // 재시도 가능 여부 확인
   bool get canRetry => nextRetryTime?.isBefore(DateTime.now()) ?? true;
 }

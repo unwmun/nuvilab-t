@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:nubilab/data/datasources/air_quality_api.dart';
 import 'package:nubilab/data/models/air_quality.dart' hide Response;

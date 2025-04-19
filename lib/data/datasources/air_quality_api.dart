@@ -10,17 +10,14 @@ class AirQualityApi {
   final Dio _dio;
   final String _serviceKey;
 
-  // SecureNetworkClient 클래스에서 관리하는 URL과 서비스 키를 사용
   AirQualityApi(@Named("secureClient") this._dio)
       : _serviceKey = SecureNetworkClient.serviceKey;
 
-  // 테스트를 위한 생성자 메서드
   @visibleForTesting
   factory AirQualityApi.withCustomDio(Dio dio, String serviceKey) {
     return AirQualityApi._test(dio, serviceKey);
   }
 
-  // 테스트 전용 생성자
   AirQualityApi._test(this._dio, this._serviceKey);
 
   Future<AirQualityResponse> getCtprvnRltmMesureDnsty({
@@ -31,9 +28,8 @@ class AirQualityApi {
     String ver = '1.0',
   }) async {
     try {
-      // SSL 보안 통신을 활용한 API 호출
       final response = await _dio.get(
-        '/getCtprvnRltmMesureDnsty', // 기본 URL은 이미 SecureNetworkClient에 설정되어 있음
+        '/getCtprvnRltmMesureDnsty',
         queryParameters: {
           'sidoName': sidoName,
           'pageNo': pageNo,

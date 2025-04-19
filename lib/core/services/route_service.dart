@@ -15,24 +15,20 @@ class RouteService {
   final FCMService _fcmService;
   final ProviderContainer _providerContainer = ProviderContainer();
 
-  // 글로벌 EventBus 역할을 할 스트림 컨트롤러
   final _sidoChangeController = StreamController<String>.broadcast();
   Stream<String> get sidoChangeStream => _sidoChangeController.stream;
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   RouteService(this._fcmService) {
-    // 딥링크 리스너 설정
     _fcmService.deepLinkStream.listen(_handleDeepLink);
   }
 
-  // 리소스 해제
   void dispose() {
     _providerContainer.dispose();
     _sidoChangeController.close();
   }
 
-  // 딥링크 처리
   Future<void> _handleDeepLink(Map<String, dynamic> data) async {
     final screen = data['screen'] as String?;
     debugPrint('딥링크 처리: $data (화면: $screen)');
@@ -60,18 +56,15 @@ class RouteService {
     }
   }
 
-  // 외부에서 딥링크 처리를 위한 공개 메서드
   Future<void> handleDeepLink(Map<String, dynamic> data) async {
     debugPrint('공개 딥링크 처리: $data');
     await _handleDeepLink(data);
   }
 
-  // 홈 화면으로 이동
   void _navigateToHome() {
     navigatorKey.currentState?.popUntil((route) => route.isFirst);
   }
 
-  // 설정 화면으로 이동
   void _navigateToSettings() {
     navigatorKey.currentState?.push(
       MaterialPageRoute(
@@ -80,15 +73,12 @@ class RouteService {
     );
   }
 
-  // 시도 변경 처리
   void _changeSido(String sido) {
     debugPrint('시도 변경 실행: $sido');
 
     try {
-      // 홈 화면으로 이동
       _navigateToHome();
 
-      // 시도 변경 이벤트 발행
       _sidoChangeController.add(sido);
 
       debugPrint('시도 변경 이벤트 발행 완료: $sido');
@@ -97,7 +87,6 @@ class RouteService {
     }
   }
 
-  // 라우트 초기화
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':

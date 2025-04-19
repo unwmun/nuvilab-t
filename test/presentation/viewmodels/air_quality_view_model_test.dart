@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -6,7 +7,6 @@ import 'package:nubilab/data/datasources/air_quality_local_datasource.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 import 'package:nubilab/domain/usecases/get_air_quality_usecase.dart';
 import 'package:nubilab/presentation/viewmodels/air_quality_view_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'air_quality_view_model_test.mocks.dart';
 
@@ -187,7 +187,7 @@ void main() {
       clearInteractions(mockUseCase);
       clearInteractions(mockLocalDataSource);
 
-      final newSido = '부산';
+      const newSido = '부산';
 
       // act
       viewModel.updateSido(newSido);

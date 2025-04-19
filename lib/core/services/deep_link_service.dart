@@ -4,6 +4,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+
 import 'route_service.dart';
 
 /// URL 스킴을 통한 딥링크 처리를 담당하는 서비스
@@ -27,14 +28,12 @@ class DeepLinkService {
     if (_isInitialized) return;
 
     try {
-      // 앱이 완전히 종료된 상태에서 딥링크로 실행된 경우 처리
       final initialLink = await _appLinks.getInitialAppLink();
       if (initialLink != null) {
         debugPrint('초기 딥링크: $initialLink');
         _handleLink(initialLink);
       }
 
-      // 앱이 백그라운드에 있는 상태에서 딥링크로 호출된 경우 처리
       _linkSubscription =
           _appLinks.uriLinkStream.listen(_handleLink, onError: (e) {
         debugPrint('딥링크 에러: $e');
@@ -54,51 +53,42 @@ class DeepLinkService {
     if (uri == null) return;
 
     try {
-      // 스킴 확인 (nlab://)
       if (uri.scheme.toLowerCase() != 'nlab') {
         debugPrint('지원하지 않는 스킴: ${uri.scheme}');
         return;
       }
 
-      // 호스트(path)는 이동할 화면 (home, settings, detail 등)
-      // 대소문자 구분 없이 처리하기 위해 소문자로 변환
       String screen;
 
       if (uri.host.isNotEmpty) {
         screen = uri.host;
       } else if (uri.path.isNotEmpty) {
-        // 첫 번째 슬래시(/) 제거
         screen = uri.path.startsWith('/') ? uri.path.substring(1) : uri.path;
       } else {
         debugPrint('잘못된 딥링크 형식: $uri');
         return;
       }
 
-      // 화면 이름 표준화 (소문자로 통일)
       screen = screen.toLowerCase();
 
-      // 화면 이름 매핑 (소문자 -> 정확한 화면 이름)
       final screenMapping = {
         'home': 'home',
         'settings': 'settings',
-        'changesido': 'changeSido', // 소문자로 입력해도 정확한 화면으로 매핑
+        'changesido': 'changeSido',
       };
 
       final normalizedScreen = screenMapping[screen] ?? screen;
 
-      // 파라미터를 Map으로 변환
       final params = <String, dynamic>{
         'screen': normalizedScreen,
       };
 
-      // 쿼리 파라미터가 있으면 추가
       uri.queryParameters.forEach((key, value) {
         params[key] = value;
       });
 
       debugPrint('딥링크 파라미터: $params');
 
-      // 경로 처리
       _routeService.handleDeepLink(params);
     } catch (e) {
       debugPrint('딥링크 처리 에러: $e');
@@ -110,7 +100,6 @@ class DeepLinkService {
     final screen = params['screen'] as String;
     final queryParams = <String, String>{};
 
-    // screen을 제외한 모든 파라미터를 쿼리 파라미터로 변환
     params.forEach((key, value) {
       if (key != 'screen' && value is String) {
         queryParams[key] = value;
