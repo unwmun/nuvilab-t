@@ -1,12 +1,6 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 import 'package:nubilab/domain/repositories/air_quality_repository.dart';
-
-final getAirQualityUseCaseProvider = Provider((ref) {
-  final repository = ref.watch(airQualityRepositoryProvider);
-  return GetAirQualityUseCase(repository);
-});
 
 @injectable
 class GetAirQualityUseCase {

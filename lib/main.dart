@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nubilab/core/di/dependency_injection.dart';
 import 'package:nubilab/data/models/air_quality_hive_models.dart';
+import 'package:nubilab/data/models/api_retry_task.dart';
 import 'package:nubilab/presentation/pages/home/home_page.dart';
 
 void main() async {
@@ -17,6 +18,7 @@ void main() async {
 
   // Hive 어댑터 등록
   Hive.registerAdapter(AirQualityCacheMetadataAdapter());
+  Hive.registerAdapter(ApiRetryTaskAdapter());
 
   // 의존성 주입 설정
   await configureDependencies();

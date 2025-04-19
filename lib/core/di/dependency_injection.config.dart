@@ -18,6 +18,8 @@ import '../../data/repositories/air_quality_repository_impl.dart' as _i779;
 import '../../domain/repositories/air_quality_repository.dart' as _i1051;
 import '../../domain/usecases/get_air_quality_usecase.dart' as _i460;
 import '../network/network_info.dart' as _i932;
+import '../network/retry_interceptor.dart' as _i10;
+import '../services/api_retry_service.dart' as _i132;
 import 'dependency_injection.dart' as _i9;
 
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -34,7 +36,7 @@ _i174.GetIt init(
   final registerModule = _$RegisterModule();
   gh.factory<_i493.AirQualityLocalDataSource>(
       () => _i493.AirQualityLocalDataSource());
-  gh.singleton<_i361.Dio>(() => registerModule.dio);
+  gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
   gh.factory<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl());
   gh.factory<_i845.AirQualityApi>(() => _i845.AirQualityApi(gh<_i361.Dio>()));
   gh.factory<_i1051.AirQualityRepository>(() => _i779.AirQualityRepositoryImpl(
@@ -44,6 +46,10 @@ _i174.GetIt init(
       ));
   gh.factory<_i460.GetAirQualityUseCase>(
       () => _i460.GetAirQualityUseCase(gh<_i1051.AirQualityRepository>()));
+  gh.singleton<_i132.ApiRetryService>(
+      () => _i132.ApiRetryService(gh<_i932.NetworkInfo>()));
+  gh.singleton<_i10.RetryInterceptor>(
+      () => _i10.RetryInterceptor(gh<_i132.ApiRetryService>()));
   return getIt;
 }
 

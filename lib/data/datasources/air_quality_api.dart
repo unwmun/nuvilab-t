@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nubilab/core/utils/logger.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 
 @injectable
@@ -9,16 +10,7 @@ class AirQualityApi {
   final String _serviceKey =
       'lW7UGCa8yfdQ7GoEA/SDI4WIb4h8h4XtADxpWDeLTRsTGlYNSzM89LvxppvVBDsieGkKb0rwWhSSOXVXCr/nyg==';
 
-  AirQualityApi(this._dio) {
-    _dio.interceptors.add(LogInterceptor(
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-      responseBody: true,
-      error: true,
-    ));
-  }
+  AirQualityApi(this._dio);
 
   Future<AirQualityResponse> getCtprvnRltmMesureDnsty({
     required String sidoName,
@@ -40,53 +32,53 @@ class AirQualityApi {
         },
       );
 
-      print('API 응답 데이터: ${response.data}');
+      AppLogger.debug('API 응답 데이터: ${response.data}');
 
       try {
         return AirQualityResponse.fromJson(response.data);
       } catch (e, stackTrace) {
-        print('JSON 파싱 에러 발생');
-        print('에러 타입: ${e.runtimeType}');
-        print('에러 메시지: $e');
-        print('응답 데이터 구조:');
+        AppLogger.error('JSON 파싱 에러 발생');
+        AppLogger.error('에러 타입: ${e.runtimeType}');
+        AppLogger.error('에러 메시지: $e');
+        AppLogger.error('응답 데이터 구조:');
         _printJsonStructure(response.data);
-        print('스택 트레이스: $stackTrace');
+        AppLogger.error('스택 트레이스: $stackTrace');
         rethrow;
       }
     } on DioException catch (e) {
-      print('Dio 에러 발생: ${e.message}');
-      print('에러 응답: ${e.response?.data}');
+      AppLogger.error('Dio 에러 발생: ${e.message}');
+      AppLogger.error('에러 응답: ${e.response?.data}');
       throw _handleDioError(e);
     } catch (e) {
-      print('예상치 못한 오류 발생: $e');
+      AppLogger.error('예상치 못한 오류 발생: $e');
       throw Exception('대기질 정보를 불러오는데 실패했습니다: $e');
     }
   }
 
   void _printJsonStructure(dynamic data, [String indent = '']) {
     if (data == null) {
-      print('${indent}null');
+      AppLogger.debug('${indent}null');
       return;
     }
 
     if (data is Map) {
-      print('${indent}{');
+      AppLogger.debug('${indent}{');
       data.forEach((key, value) {
-        print('$indent  $key: ${value.runtimeType}');
+        AppLogger.debug('$indent  $key: ${value.runtimeType}');
         if (value is Map || value is List) {
           _printJsonStructure(value, '$indent  ');
         }
       });
-      print('$indent}');
+      AppLogger.debug('$indent}');
     } else if (data is List) {
-      print('${indent}[');
+      AppLogger.debug('${indent}[');
       if (data.isNotEmpty) {
-        print('$indent  ${data.first.runtimeType}');
+        AppLogger.debug('$indent  ${data.first.runtimeType}');
         if (data.first is Map || data.first is List) {
           _printJsonStructure(data.first, '$indent  ');
         }
       }
-      print('$indent]');
+      AppLogger.debug('$indent]');
     }
   }
 
