@@ -10,6 +10,7 @@ import 'widgets/empty_data_message.dart';
 import 'widgets/error_message.dart';
 import 'widgets/last_updated_info.dart';
 import 'widgets/loading_indicator.dart';
+import 'widgets/offline_banner.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -23,6 +24,49 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     _subscribeToDeeepLinks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleConnectionStatusChange();
+    });
+  }
+
+  @override
+  void didUpdateWidget(HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleConnectionStatusChange();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleConnectionStatusChange();
+    });
+  }
+
+  void _handleConnectionStatusChange() {
+    final state = ref.read(airQualityViewModelProvider);
+    final viewModel = ref.read(airQualityViewModelProvider.notifier);
+
+    if (state.connectionStatusChange != null && mounted) {
+      final statusChange = state.connectionStatusChange!;
+      final Color backgroundColor =
+          statusChange.type == ConnectionChangeType.online
+              ? Colors.green
+              : Colors.orange;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(statusChange.message),
+          backgroundColor: backgroundColor,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+
+      // 메시지를 표시한 후 소비
+      viewModel.consumeConnectionStatusChange();
+    }
   }
 
   @override
@@ -99,7 +143,13 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
       body: Column(
         children: [
-          LastUpdatedInfo(lastUpdatedText: viewModel.lastUpdatedText),
+          if (airQualityState.isOffline)
+            OfflineBanner(isUsingCachedData: airQualityState.isUsingCachedData),
+          LastUpdatedInfo(
+            lastUpdatedText: viewModel.lastUpdatedText,
+            isOffline: airQualityState.isOffline,
+            isUsingCachedData: airQualityState.isUsingCachedData,
+          ),
           Expanded(
             child: airQualityState.airQuality.when(
               data: (airQualityResponse) {
@@ -118,6 +168,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 error: error,
                 stackTrace: stackTrace,
                 onRetry: () => viewModel.fetchAirQuality(selectedSido),
+                isOffline: airQualityState.isOffline,
               ),
             ),
           ),

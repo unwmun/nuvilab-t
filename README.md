@@ -1,4 +1,4 @@
-# Nubilab - 공공 API 연동 Flutter 애플리케이션
+# Nuvilab - 공공 API 연동 Flutter 애플리케이션
 
 본 프로젝트는 Flutter를 기반으로 공공데이터 API를 연동한 모바일 애플리케이션입니다. MVVM 아키텍처 패턴을 적용하여 유지보수성과 확장성을 고려하였습니다.
 
@@ -13,14 +13,7 @@
 
 ### 실행 단계
 
-1. 프로젝트 복제
-
-```bash
-git clone https://github.com/yourusername/nubilab.git
-cd nubilab
-```
-
-2. 의존성 설치 및 코드 생성 파일 빌드
+1. 의존성 설치 및 코드 생성 파일 빌드
 
 ```bash
 flutter pub get
@@ -29,7 +22,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 위 명령은 Freezed, json_serializable, injectable_generator, hive_generator 등의 코드 생성 라이브러리가 필요로 하는 자동 생성 파일들을 생성합니다.
 
-3. 애플리케이션 실행
+2. 애플리케이션 실행
 
 ```bash
 flutter run
@@ -153,3 +146,82 @@ dioAdapter.onGet(
 ```bash
 flutter test test/data/datasources/air_quality_api_test.dart
 ```
+
+## 🔄 네트워크 연결 끊김 이슈 해결
+
+### 이슈 설명
+
+애플리케이션에서 네트워크 연결이 끊어질 경우 무한 로딩 상태가 발생하는 문제가 발견되었습니다. 사용자는 데이터 로딩 스피너만 보게 되어 앱이 응답이 없는 것처럼 느껴질 수 있었습니다.
+
+### 원인 분석
+
+1. **네트워크 상태 감지 불충분**: 기존 `NetworkInfo` 구현은 단순히 `InternetAddress.lookup()`을 사용하여 네트워크 연결을 확인했지만, 시간 초과 설정이 없었고 네트워크 상태 변화를 실시간으로 감지하지 못했습니다.
+
+2. **오프라인 상태에서 UI 처리 미흡**: 네트워크 연결이 끊어진 상태를 사용자에게 명확히 표시하지 않았고, 로컬 캐시 데이터 사용 여부도 알려주지 않았습니다.
+
+3. **타임아웃 처리 부족**: 네트워크 요청 시 타임아웃 설정은 있었지만, 연결이 끊어진 경우 무한정 대기하는 문제가 있었습니다.
+
+### 구현된 해결책
+
+#### 1. 개선된 네트워크 상태 감지
+
+- `connectivity_plus` 패키지를 도입하여 기기의 연결 상태를 실시간으로 모니터링
+- 네트워크 연결 확인에 타임아웃 추가 (5초)
+- 연결 상태 변경 스트림을 제공하여 앱 전체에서 연결 상태 변화를 구독할 수 있도록 개선
+
+```dart
+Future<bool> get isConnected async {
+  try {
+    // 먼저 기기의 연결 상태 확인
+    final connectivityResult = await _connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      return false;
+    }
+
+    // 실제 인터넷 연결 확인
+    final result = await InternetAddress.lookup('google.com')
+        .timeout(const Duration(seconds: 5));
+    return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+  } catch (e) {
+    return false;
+  }
+}
+```
+
+#### 2. 사용자 인터페이스 개선
+
+- 오프라인 상태일 때 명확한 배너 표시
+- 캐시된 데이터를 사용 중임을 사용자에게 알림
+- 오프라인 모드에 맞는 특별한 에러 메시지 제공
+
+#### 3. 연결 상태 변경 알림
+
+- 네트워크 연결이 복구되거나 끊겼을 때 사용자에게 Snackbar로 알림
+- 연결 복구 시 자동으로 최신 데이터 로드
+
+### 재현 및 테스트 방법
+
+다음 단계로 이슈를 재현하고 해결책을 테스트할 수 있습니다:
+
+1. **이슈 재현 방법**:
+
+   - 앱을 실행하고 데이터를 로드
+   - 기기를 비행기 모드로 전환하거나 네트워크 연결 해제
+   - 앱에서 새로고침 버튼 탭 또는 다른 시도 선택
+   - 수정 전: 무한 로딩 상태 발생, 사용자에게 피드백 없음
+   - 수정 후: 오프라인 모드 배너 표시, 캐시된 데이터가 있으면 표시, 없으면 적절한 오류 메시지 표시
+
+2. **네트워크 복구 테스트**:
+
+   - 앱이 오프라인 모드일 때 네트워크 연결 복구 (비행기 모드 해제)
+   - 수정 전: 사용자가 수동으로 새로고침하기 전까지 오프라인 상태 유지
+   - 수정 후: 자동으로 연결 복구 감지 및 Snackbar 알림 표시, 최신 데이터 로딩
+
+3. **캐시 데이터 테스트**:
+   - 앱 사용 중 캐시 데이터 생성 (여러 시도 데이터 로드)
+   - 네트워크 연결 해제
+   - 다른 시도 데이터 요청
+   - 수정 전: 새 데이터 로딩 시도 및 무한 로딩
+   - 수정 후: 캐시된 데이터가 있으면 표시하고 "오프라인 모드 (캐시 데이터)" 메시지 표시
+
+이 개선으로 사용자는 네트워크 상태 변화에 관계없이 앱을 원활하게 사용할 수 있으며, 오프라인 상태에서도 가능한 한 최선의 경험을 제공받을 수 있습니다.

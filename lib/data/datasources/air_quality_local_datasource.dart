@@ -58,6 +58,16 @@ class AirQualityLocalDataSource {
     }
   }
 
+  Future<DateTime?> getLastUpdatedTime(String sidoName) async {
+    final metadataBox =
+        await Hive.openBox<AirQualityCacheMetadata>(_metadataBoxName);
+
+    final cacheKey = _generateCacheKey(sidoName);
+    final metadata = metadataBox.get(cacheKey);
+
+    return metadata?.lastUpdated;
+  }
+
   bool _isCacheExpired(DateTime lastUpdated) {
     final now = DateTime.now();
     return now.difference(lastUpdated) > cacheValidDuration;

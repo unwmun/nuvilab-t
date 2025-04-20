@@ -14,6 +14,7 @@ dependencies:
   flutter_riverpod: ^2.4.9
   # 네트워크
   dio: ^5.4.0
+  connectivity_plus: ^6.1.3
   # 모델링/직렬화
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
