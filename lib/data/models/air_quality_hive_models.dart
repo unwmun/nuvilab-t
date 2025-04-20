@@ -13,9 +13,17 @@ class AirQualityCacheMetadata {
   @HiveField(2)
   final String cacheKey;
 
+  @HiveField(3)
+  final String dataVersion;
+
+  @HiveField(4)
+  final String dataHash;
+
   AirQualityCacheMetadata({
     required this.sidoName,
     required this.lastUpdated,
     required this.cacheKey,
+    this.dataVersion = '',
+    this.dataHash = '',
   });
 }
