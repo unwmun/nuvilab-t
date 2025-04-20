@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../core/utils/logger.dart';
 import '../models/air_quality.dart';
 import '../models/air_quality_hive_models.dart';
-import '../../core/utils/logger.dart';
 
 @injectable
 class AirQualityLocalDataSource {
@@ -29,7 +30,7 @@ class AirQualityLocalDataSource {
     // 데이터 버전 계산 (dataTime 필드를 활용)
     String calculatedVersion = '';
     if (data.response.body.items.isNotEmpty) {
-      calculatedVersion = data.response.body.items.first.dataTime;
+      calculatedVersion = data.response.body.items.first.dataTime ?? '';
     }
 
     final versionToSave = dataVersion ?? calculatedVersion;

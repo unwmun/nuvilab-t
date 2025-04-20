@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:nubilab/core/constants/sido_list.dart';
+import 'package:nubilab/core/di/dependency_injection.dart' as di;
 import 'package:nubilab/data/datasources/air_quality_api.dart';
 import 'package:nubilab/data/models/air_quality.dart';
 import 'package:nubilab/main.dart' as app;
-import 'package:nubilab/core/constants/sido_list.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nubilab/core/di/dependency_injection.dart' as di;
-import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:dio/dio.dart' hide Response;
 
 class MockAirQualityApi extends Mock implements AirQualityApi {
   @override
@@ -49,7 +46,7 @@ class MockAirQualityApi extends Mock implements AirQualityApi {
           pageNo: pageNo,
           numOfRows: numOfRows,
         ),
-        header: Header(
+        header: const Header(
           resultMsg: 'OK',
           resultCode: '00',
         ),
@@ -74,7 +71,7 @@ void main() {
       }
       di.getIt.registerSingleton<AirQualityApi>(mockApi);
     } catch (e) {
-      print('의존성 주입 오류: $e');
+      debugPrint('의존성 주입 오류: $e');
     }
   });
 

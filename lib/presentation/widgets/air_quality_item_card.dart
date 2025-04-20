@@ -22,7 +22,7 @@ class AirQualityItemCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    item.stationName,
+                    item.stationName ?? '지역명 없음',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -32,7 +32,7 @@ class AirQualityItemCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              Text('측정 시간: ${item.dataTime}'),
+              Text('측정 시간: ${item.dataTime ?? '정보 없음'}'),
               const SizedBox(height: 8),
               const Divider(),
               const SizedBox(height: 8),
@@ -55,7 +55,7 @@ class AirQualityItemCard extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => DetailPage(
-          stationName: item.stationName,
+          stationName: item.stationName ?? '지역명 없음',
           item: item,
         ),
       ),
@@ -114,7 +114,18 @@ class AirQualityItemCard extends StatelessWidget {
   }
 
   Widget _buildAirQualityGradeChip(String? grade) {
-    if (grade == null) return const SizedBox();
+    if (grade == null || grade.isEmpty) {
+      return const Chip(
+        label: Text(
+          '정보없음',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.grey,
+      );
+    }
 
     String text;
     Color color;

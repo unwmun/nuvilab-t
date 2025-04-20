@@ -285,7 +285,7 @@ class AirQualityViewModel extends StateNotifier<AirQualityState> {
     Future.delayed(const Duration(minutes: 10), () async {
       final isConnected = await _networkInfo.isConnected;
       if (isConnected) {
-        _fetchAirQuality();
+        await _fetchAirQuality();
       }
       _startPeriodicUpdate();
     });

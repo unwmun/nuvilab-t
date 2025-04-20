@@ -48,9 +48,9 @@ class DetailPage extends StatelessWidget {
           context,
           '측정 정보',
           [
-            _buildInfoRow('측정소', item.stationName),
-            _buildInfoRow('측정 시간', item.dataTime),
-            _buildInfoRow('지역', item.sidoName),
+            _buildInfoRow('측정소', item.stationName ?? '정보 없음'),
+            _buildInfoRow('측정 시간', item.dataTime ?? '정보 없음'),
+            _buildInfoRow('지역', item.sidoName ?? '정보 없음'),
           ],
         ),
         const SizedBox(height: 16),
@@ -59,17 +59,17 @@ class DetailPage extends StatelessWidget {
           '대기 오염 수치',
           [
             _buildInfoRow('미세먼지(PM10)',
-                '${item.pm10Value} ㎍/㎥ (등급: ${_getGradeText(item.pm10Grade)})'),
+                '${item.pm10Value ?? '-'} ㎍/㎥ (등급: ${_getGradeText(item.pm10Grade)})'),
             _buildInfoRow('초미세먼지(PM2.5)',
-                '${item.pm25Value} ㎍/㎥ (등급: ${_getGradeText(item.pm25Grade)})'),
+                '${item.pm25Value ?? '-'} ㎍/㎥ (등급: ${_getGradeText(item.pm25Grade)})'),
             _buildInfoRow('이산화질소',
-                '${item.no2Value} ppm (등급: ${_getGradeText(item.no2Grade)})'),
+                '${item.no2Value ?? '-'} ppm (등급: ${_getGradeText(item.no2Grade)})'),
             _buildInfoRow('오존',
-                '${item.o3Value} ppm (등급: ${_getGradeText(item.o3Grade)})'),
+                '${item.o3Value ?? '-'} ppm (등급: ${_getGradeText(item.o3Grade)})'),
             _buildInfoRow('일산화탄소',
-                '${item.coValue} ppm (등급: ${_getGradeText(item.coGrade)})'),
+                '${item.coValue ?? '-'} ppm (등급: ${_getGradeText(item.coGrade)})'),
             _buildInfoRow('아황산가스',
-                '${item.so2Value} ppm (등급: ${_getGradeText(item.so2Grade)})'),
+                '${item.so2Value ?? '-'} ppm (등급: ${_getGradeText(item.so2Grade)})'),
           ],
         ),
         const SizedBox(height: 16),
@@ -78,14 +78,16 @@ class DetailPage extends StatelessWidget {
           '통합 대기 환경 지수',
           [
             _buildInfoRow('통합 지수(KHAI)',
-                '${item.khaiValue} (등급: ${_getGradeText(item.khaiGrade)})'),
+                '${item.khaiValue ?? '-'} (등급: ${_getGradeText(item.khaiGrade)})'),
           ],
         ),
       ],
     );
   }
 
-  String _getGradeText(String grade) {
+  String _getGradeText(String? grade) {
+    if (grade == null || grade.isEmpty) return '정보없음';
+
     switch (grade) {
       case '1':
         return '좋음';

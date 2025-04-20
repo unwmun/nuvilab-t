@@ -368,3 +368,112 @@ Future<bool> syncAirQualityData(String sidoName) async {
    - 네트워크 복구 후 자동 또는 수동 새로고침으로 최신 데이터 로드 확인
 
 이 개선사항들은 데이터의 일관성과 무결성을 보장하여 사용자에게 항상 정확한 정보를 제공합니다. 또한 네트워크 연결 상태와 관계없이 앱의 안정적인 동작을 보장합니다.
+
+## 📊 서버 데이터 결측치(null) 처리 개선
+
+### 문제 상황
+
+앱 사용 중 서버에서 일부 데이터 필드가 null로 반환되는 경우 앱이 강제 종료되는 문제가 발생했습니다. 특히 대기 질 측정 API에서 일부 측정값이 결측되어 null로 제공될 때 이 문제가 발생했습니다.
+
+### 문제 원인 분석
+
+1. **데이터 모델의 non-nullable 필드**: 대부분의 `AirQualityItem` 모델 필드가 `required`로 선언되어 있어 서버에서 필드가 누락되면 JSON 파싱 단계에서 오류가 발생했습니다.
+
+2. **불완전한 null 처리**: 모델 파싱 시 `_stringFromJson` 헬퍼 메서드가 null 값을 빈 문자열('')로 변환하고 있었지만, 이는 필드 자체가 응답에 없는 경우를 처리하지 못했습니다.
+
+3. **UI 레이어의 null 체크 부족**: 화면에 데이터를 표시하는 위젯들이 일부 필드의 null 여부를 확인하지 않아 런타임에 `null` 참조 예외가 발생했습니다.
+
+### 재현 방법
+
+다음 조건에서 앱 크래시가 발생합니다:
+
+1. 대기질 API가 일부 측정소에 대해 결측 데이터를 반환하는 경우
+2. 특히 다음 필드 중 하나가 누락된 경우:
+   - stationName
+   - dataTime
+   - khaiValue
+   - pm10Value, pm25Value
+   - 기타 측정 값 필드들
+
+### 구현된 해결책
+
+#### 1. 데이터 모델 수정
+
+모든 필드를 nullable로 변경하고 JSON 파싱 로직을 개선했습니다:
+
+```dart
+@freezed
+class AirQualityItem with _$AirQualityItem {
+  const factory AirQualityItem({
+    @JsonKey(fromJson: _stringFromJson) String? so2Grade,
+    String? coFlag,
+    @JsonKey(fromJson: _stringFromJson) String? khaiValue,
+    @JsonKey(fromJson: _stringFromJson) String? so2Value,
+    // 다른 필드들도 nullable로 변경
+  }) = _AirQualityItem;
+
+  factory AirQualityItem.fromJson(Map<String, dynamic> json) =>
+      _$AirQualityItemFromJson(json);
+}
+
+String? _stringFromJson(dynamic value) {
+  if (value == null) return null;  // null을 빈 문자열이 아닌 null로 반환
+  return value.toString();
+}
+```
+
+#### 2. UI 컴포넌트 null 처리 개선
+
+UI 위젯에서 모든 필드 접근 시 null 체크를 추가했습니다:
+
+```dart
+// AirQualityItemCard 위젯 예시
+Text(
+  item.stationName ?? '지역명 없음',
+  style: const TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  ),
+),
+```
+
+```dart
+// 측정값 표시 부분 예시
+_buildMeasurementRow(
+    '미세먼지(PM10)',
+    item.pm10Value ?? '-',
+    item.pm10Grade
+)
+```
+
+#### 3. API 응답 처리 향상
+
+API 응답 처리 시 더 상세한 오류 로깅과 예외 처리를 추가했습니다:
+
+```dart
+try {
+  if (response.data == null) {
+    AppLogger.error('API 응답 데이터가 null입니다.');
+    throw Exception('API 응답 데이터가 없습니다.');
+  }
+  return AirQualityResponse.fromJson(response.data);
+} catch (e, stackTrace) {
+  AppLogger.error('JSON 파싱 에러 발생');
+  // 상세 오류 로깅 추가...
+
+  // 데이터 구조 로깅
+  if (response.data is Map<String, dynamic>) {
+    // 응답 구조 상세 기록...
+  }
+
+  throw Exception('대기질 정보 파싱 중 오류가 발생했습니다: $e');
+}
+```
+
+### 결과
+
+1. **앱 안정성 향상**: 서버에서 불완전한 데이터가 제공되더라도 앱이 정상적으로 동작합니다.
+2. **사용자 경험 개선**: 데이터 결측 시 "-" 또는 "정보 없음"과 같은 사용자 친화적인 메시지를 표시합니다.
+3. **디버깅 용이성**: 로깅을 강화하여 향후 API 응답 관련 문제 해결이 더 쉬워졌습니다.
+
+이러한 개선 사항은 앱의 전반적인 견고성을 향상시키고, 예상치 못한 서버 응답에도 유연하게 대응할 수 있도록 했습니다.

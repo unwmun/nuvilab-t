@@ -46,7 +46,7 @@ class AirQualityRepositoryImpl implements AirQualityRepository {
         // 데이터 버전 확인 (첫 번째 아이템의 dataTime을 버전으로 사용)
         String apiDataVersion = '';
         if (remoteData.response.body.items.isNotEmpty) {
-          apiDataVersion = remoteData.response.body.items.first.dataTime;
+          apiDataVersion = remoteData.response.body.items.first.dataTime ?? '';
         }
 
         // 캐시된 데이터가 없거나, API 데이터가 더 최신인 경우에만 저장
@@ -88,6 +88,7 @@ class AirQualityRepositoryImpl implements AirQualityRepository {
   }
 
   // 캐시와 API 데이터 동기화 명시적 요청 메소드
+  @override
   Future<bool> syncAirQualityData(String sidoName) async {
     try {
       // 현재 캐시된 데이터의 버전 확인
@@ -101,7 +102,7 @@ class AirQualityRepositoryImpl implements AirQualityRepository {
       // 데이터 버전 추출
       String apiDataVersion = '';
       if (remoteData.response.body.items.isNotEmpty) {
-        apiDataVersion = remoteData.response.body.items.first.dataTime;
+        apiDataVersion = remoteData.response.body.items.first.dataTime ?? '';
       }
 
       // 캐시 데이터가 없거나 API 데이터가 더 최신인 경우에만 저장

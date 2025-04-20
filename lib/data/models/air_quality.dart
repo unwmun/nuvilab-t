@@ -49,36 +49,36 @@ class Header with _$Header {
 @freezed
 class AirQualityItem with _$AirQualityItem {
   const factory AirQualityItem({
-    @JsonKey(fromJson: _stringFromJson) required String so2Grade,
+    @JsonKey(fromJson: _stringFromJson) String? so2Grade,
     String? coFlag,
-    @JsonKey(fromJson: _stringFromJson) required String khaiValue,
-    @JsonKey(fromJson: _stringFromJson) required String so2Value,
-    @JsonKey(fromJson: _stringFromJson) required String coValue,
+    @JsonKey(fromJson: _stringFromJson) String? khaiValue,
+    @JsonKey(fromJson: _stringFromJson) String? so2Value,
+    @JsonKey(fromJson: _stringFromJson) String? coValue,
     String? pm25Flag,
     String? pm10Flag,
-    @JsonKey(fromJson: _stringFromJson) required String o3Grade,
-    @JsonKey(fromJson: _stringFromJson) required String pm10Value,
-    @JsonKey(fromJson: _stringFromJson) required String khaiGrade,
-    @JsonKey(fromJson: _stringFromJson) required String pm25Value,
-    @JsonKey(fromJson: _stringFromJson) required String sidoName,
+    @JsonKey(fromJson: _stringFromJson) String? o3Grade,
+    @JsonKey(fromJson: _stringFromJson) String? pm10Value,
+    @JsonKey(fromJson: _stringFromJson) String? khaiGrade,
+    @JsonKey(fromJson: _stringFromJson) String? pm25Value,
+    @JsonKey(fromJson: _stringFromJson) String? sidoName,
     String? no2Flag,
-    @JsonKey(fromJson: _stringFromJson) required String no2Grade,
+    @JsonKey(fromJson: _stringFromJson) String? no2Grade,
     String? o3Flag,
-    @JsonKey(fromJson: _stringFromJson) required String pm25Grade,
+    @JsonKey(fromJson: _stringFromJson) String? pm25Grade,
     String? so2Flag,
-    @JsonKey(fromJson: _stringFromJson) required String dataTime,
-    @JsonKey(fromJson: _stringFromJson) required String coGrade,
-    @JsonKey(fromJson: _stringFromJson) required String no2Value,
-    @JsonKey(fromJson: _stringFromJson) required String stationName,
-    @JsonKey(fromJson: _stringFromJson) required String pm10Grade,
-    @JsonKey(fromJson: _stringFromJson) required String o3Value,
+    @JsonKey(fromJson: _stringFromJson) String? dataTime,
+    @JsonKey(fromJson: _stringFromJson) String? coGrade,
+    @JsonKey(fromJson: _stringFromJson) String? no2Value,
+    @JsonKey(fromJson: _stringFromJson) String? stationName,
+    @JsonKey(fromJson: _stringFromJson) String? pm10Grade,
+    @JsonKey(fromJson: _stringFromJson) String? o3Value,
   }) = _AirQualityItem;
 
   factory AirQualityItem.fromJson(Map<String, dynamic> json) =>
       _$AirQualityItemFromJson(json);
 }
 
-String _stringFromJson(dynamic value) {
-  if (value == null) return '';
+String? _stringFromJson(dynamic value) {
+  if (value == null) return null;
   return value.toString();
 }

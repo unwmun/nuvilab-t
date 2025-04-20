@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'dart:async';
+import 'dart:io';
 
-import 'package:injectable/injectable.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class NetworkInfo {
   Future<bool> get isConnected;
@@ -18,7 +18,8 @@ class NetworkInfoImpl implements NetworkInfo {
     try {
       // 먼저 기기의 연결 상태 확인
       final connectivityResult = await _connectivity.checkConnectivity();
-      if (connectivityResult == ConnectivityResult.none) {
+      if (connectivityResult.contains(ConnectivityResult.none) ||
+          connectivityResult.isEmpty) {
         return false;
       }
 
@@ -38,7 +39,7 @@ class NetworkInfoImpl implements NetworkInfo {
   @override
   Stream<bool> get connectivityStream {
     return _connectivity.onConnectivityChanged.asyncMap((result) async {
-      if (result == ConnectivityResult.none) {
+      if (result.contains(ConnectivityResult.none) || result.isEmpty) {
         return false;
       }
 

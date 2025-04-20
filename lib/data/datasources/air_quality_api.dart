@@ -42,6 +42,11 @@ class AirQualityApi {
 
       AppLogger.debug('API 응답 데이터: ${response.data}');
 
+      if (response.data == null) {
+        AppLogger.error('API 응답 데이터가 null입니다.');
+        throw Exception('API 응답 데이터가 없습니다.');
+      }
+
       try {
         return AirQualityResponse.fromJson(response.data);
       } catch (e, stackTrace) {
@@ -50,8 +55,38 @@ class AirQualityApi {
         AppLogger.error('에러 메시지: $e');
         AppLogger.error('응답 데이터 구조:');
         _printJsonStructure(response.data);
+
+        // 데이터 구조 및 필드 상세 로깅
+        if (response.data is Map<String, dynamic>) {
+          final responseData = response.data as Map<String, dynamic>;
+          AppLogger.error('응답 데이터 필드:');
+          responseData.forEach((key, value) {
+            AppLogger.error('[$key]: ${value?.runtimeType} - $value');
+
+            if (key == 'response' && value is Map<String, dynamic>) {
+              final body = value['body'];
+              if (body != null && body is Map<String, dynamic>) {
+                final items = body['items'];
+                if (items != null && items is List) {
+                  AppLogger.error('items 길이: ${items.length}');
+                  if (items.isNotEmpty) {
+                    AppLogger.error('첫 번째 아이템 필드:');
+                    if (items.first is Map<String, dynamic>) {
+                      (items.first as Map<String, dynamic>)
+                          .forEach((itemKey, itemValue) {
+                        AppLogger.error(
+                            '  - [$itemKey]: ${itemValue?.runtimeType} - $itemValue');
+                      });
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }
+
         AppLogger.error('스택 트레이스: $stackTrace');
-        rethrow;
+        throw Exception('대기질 정보 파싱 중 오류가 발생했습니다: $e');
       }
     } on DioException catch (e) {
       AppLogger.error('Dio 에러 발생: ${e.message}');
